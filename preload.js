@@ -1,5 +1,6 @@
 let sprite;
 let img;
+let sound;
 
 function preload() {
 
@@ -74,5 +75,24 @@ function preload() {
     ]
 
   }
+
+  sound = {
+    credit: loadSound('resources/sound/credit.ogg'),
+    death: loadSound('resources/sound/death.ogg'),
+    eat_fruit: loadSound('resources/sound/eat_fruit.ogg'),
+    eat_ghost: loadSound('resources/sound/eat_ghost.ogg'),
+    intermission: loadSound('resources/sound/intermission.ogg'),
+    lethal_nomming: loadSound('resources/sound/lethal_nomming.ogg'),
+    nom_0: loadSound('resources/sound/nom_0.ogg'),
+    nom_1: loadSound('resources/sound/nom_1.ogg'),
+    oneup: loadSound('resources/sound/oneup.ogg'),
+    retreat: loadSound('resources/sound/retreat.ogg'),
+    siren_0: loadSound('resources/sound/siren_0.ogg'),
+    siren_1: loadSound('resources/sound/siren_1.ogg'),
+    siren_2: loadSound('resources/sound/siren_2.ogg'),
+    siren_3: loadSound('resources/sound/siren_3.ogg'),
+    siren_4: loadSound('resources/sound/siren_4.ogg'),
+    start: loadSound('resources/sound/start.ogg')
+  };
 
 }
