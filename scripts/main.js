@@ -14,7 +14,7 @@ function draw() {
   noSmooth();
   scale(scaling);
   background(0);
-  updateAnimationFrame()
+  updateAnimationFrame();
 
   switch (currentScene) {
     case 'game':

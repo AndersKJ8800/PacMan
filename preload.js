@@ -94,5 +94,5 @@ function preload() {
     siren_4: loadSound('resources/sound/siren_4.ogg'),
     start: loadSound('resources/sound/start.ogg')
   };
-
+  
 }
