@@ -13,7 +13,6 @@ class Player {
     }
 
     changeDirection() {
-      print(downKey);
       if (downKey.up) {
         this.dir = 1;
       }
