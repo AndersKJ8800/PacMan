@@ -7,22 +7,23 @@ class Player {
         this.start=0;
         this.stop=0;
         this.degree=0;
-        this.dir = 2;
+        this.dir = 3;
         this.velocity = 2;
         this.open = true;
     }
 
     changeDirection() {
-      if (keyPressed.up) {
+      print(downKey);
+      if (downKey.up) {
         this.dir = 1;
       }
-      if (keyPressed.down) {
+      if (downKey.down) {
+        this.dir = 2;
+      }
+      if (downKey.left) {
         this.dir = 3;
       }
-      if (keyPressed.left) {
-        this.dir = 3;
-      }
-      if (keyPressed.right) {
+      if (downKey.right) {
         this.dir = 4;
       }
     }
