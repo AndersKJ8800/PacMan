@@ -1,3 +1,5 @@
+let player = new Player();
+
 function game() {
 
   //tegn bagrunds labyrint
@@ -15,6 +17,10 @@ function game() {
       squares[i].display();
     }
   }
+
+  player.changeDirection();
+  player.update();
+  player.show();
 
 
 }
