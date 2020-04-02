@@ -12,15 +12,9 @@ function preload() {
   sprite = {
 
     pac_man: [
-      loadImage('resources/images/placeholder.png'),
-      loadImage('resources/images/placeholder.png'),
-      loadImage('resources/images/placeholder.png'),
-      loadImage('resources/images/placeholder.png'),
-      loadImage('resources/images/placeholder.png'),
-      loadImage('resources/images/placeholder.png'),
-      loadImage('resources/images/placeholder.png'),
-      loadImage('resources/images/placeholder.png'),
-      loadImage('resources/images/placeholder.png')
+      loadImage('resources/images/pac_man_0.png'),
+      loadImage('resources/images/pac_man_1.png'),
+      loadImage('resources/images/pac_man_2.png')
     ],
 
     big_pac_man: [
@@ -76,6 +70,11 @@ function preload() {
 
   }
 
+  animated_sprite = {
+    pac_man: sprite.pac_man[0],
+    power_pellet: sprite.power_pellet
+  }
+
   sound = {
     credit: loadSound('resources/sound/credit.ogg'),
     death: loadSound('resources/sound/death.ogg'),
@@ -94,5 +93,5 @@ function preload() {
     siren_4: loadSound('resources/sound/siren_4.ogg'),
     start: loadSound('resources/sound/start.ogg')
   };
-  
+
 }

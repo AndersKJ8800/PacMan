@@ -7,13 +7,18 @@ class Square {
     this.changeType();
   }
 
+  update() {
+    this.changeType();
+    this.display();
+  }
+
   changeType() {
     switch (this.type) {
       case "dot":
         this.sprite = sprite.dot;
         break;
       case "power pellet":
-        this.sprite = sprite.power_pellet;
+        this.sprite = animated_sprite.power_pellet;
         break;
       case "gate":
         this.sprite = sprite.gate;
@@ -25,20 +30,9 @@ class Square {
   }
 
   display() {
+    this.changeType();
     if (this.sprite != null) {
-
-      switch (this.type) {
-
-        case "power pellet":
-          if (powerPelletDisplay === true) {
-            image(this.sprite, this.posX * 8, this.posY * 8);
-          }
-          break;
-        default:
-          image(this.sprite, this.posX * 8, this.posY * 8);
-          break;
-      }
-
+      image(this.sprite, this.posX * 8, this.posY * 8);
     }
 
   }

@@ -13,14 +13,9 @@ function game() {
 
   //opdatèr alle dots
   for (let i = 0; i < squares.length; i++) {
-    if (squares[i].type === "dot" || "power pellet") {
-      squares[i].display();
-    }
+    squares[i].update();
   }
 
-  player.changeDirection();
   player.update();
-  player.show();
-
 
 }

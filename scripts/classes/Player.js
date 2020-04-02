@@ -1,78 +1,73 @@
 class Player {
-    constructor(){
-        this.x=resX/2;
-        this.y=resY/2;
-        this.width=20;
-        this.height=20;
-        this.start=0;
-        this.stop=0;
-        this.degree=0;
-        this.dir = 3;
-        this.velocity = 2;
-        this.open = true;
+    constructor() {
+      this.posX = 105;
+      this.posY = 205;
+      this.dir = 4;
+      this.velocity = 1;
+      this.sprite;
+      this.spriteOffsetX = 0;
+      this.spriteOffsetY = 0;
+    }
+
+    update() {
+      this.changeDirection();
+      this.updatePos();
+      this.display();
     }
 
     changeDirection() {
       if (downKey.up) {
         this.dir = 1;
       }
-      if (downKey.down) {
+      if (downKey.right) {
         this.dir = 2;
       }
-      if (downKey.left) {
+      if (downKey.down) {
         this.dir = 3;
       }
-      if (downKey.right) {
+      if (downKey.left) {
         this.dir = 4;
       }
     }
 
-    update(){
-        //oppen and close the mouth
-        if(this.degree<1){
-            this.open=true;
-        }else if(this.degree>80){
-            this.open = false;
+    updatePos() {
+        //opdaterer koordinater ud fra dir: 1 = op, 2 = højre, 3 = ned, 4 = venstre
+        switch (this.dir) {
+          case 1:
+            this.posY = this.posY-this.velocity;
+            this.spriteOffsetX = 15;
+            this.spriteOffsetY = 0;
+            break;
+          case 2:
+            this.posX = this.posX+this.velocity;
+            this.spriteOffsetX = 0;
+            this.spriteOffsetY = 0;
+            break;
+          case 3:
+            this.posY = this.posY+this.velocity;
+            this.spriteOffsetX = 0;
+            this.spriteOffsetY = 15;
+            break;
+          case 4:
+            this.posX = this.posX-this.velocity;
+            this.spriteOffsetX = 15;
+            this.spriteOffsetY = 15;
+            break;
         }
-
-        if(this.open===true){
-            this.degree=this.degree+5;
-        }else{
-            this.degree=this.degree-5;
-        }
-
-        //updates the new cordinats 1=up 2=down 3=left 4=right
-        if(this.dir===1){
-            this.y=this.y-this.velocity;
-            this.start=270+this.degree;
-            this.stop=270-this.degree;
-        }else if(this.dir===2){
-            this.y=this.y+this.velocity;
-            this.start=90+this.degree;
-            this.stop=90-this.degree;
-        }else if(this.dir===3){
-            this.x=this.x-this.velocity;
-            this.start=180+this.degree;
-            this.stop=180-this.degree;
-        }else if(this.dir===4){
-            this.x=this.x+this.velocity;
-            this.start=0+this.degree;
-            this.stop=0-this.degree;
-        }
-
-        if(this.x>width){
-            this.x=0;
-        }else if(this.x<0){
-            this.x=width;
-        }else if(this.y>height){
-            this.y=0;
-        }else if(this.y<0){
-            this.y=height;
-        }
-
+        //opdaterer sprite
+        this.sprite = animated_sprite.pac_man;
     }
 
-    show(){
-        arc(this.x, this.y, this.width, this.height, this.start, this.stop);
+    display() {
+      //roterer alt omkring spilleren baseret på spillerens retning og tegner spriten
+      //dette gøres, da man ikke bare lige kan rotere et billede for sig selv
+      translate(this.posX, this.posY);
+      rotate((this.dir-2)*90);
+
+      image(this.sprite, 0 - this.spriteOffsetX, 0 - this.spriteOffsetY);
+
+      //roterer alt tilbage igen
+      rotate(-(this.dir-2)*90);
+      translate(-this.posX, -this.posY);
     }
 }
