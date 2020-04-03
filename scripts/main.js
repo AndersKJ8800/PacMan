@@ -1,6 +1,7 @@
 let resX = 224;
 let resY = 288;
 let currentScene = 'game';
+let currentFrameRate = 60;
 let downKey = {
   up: false,
   down: false,
@@ -41,14 +42,14 @@ function draw() {
     downKey.right = true;
   }
 
-  //gør nogle forskellige ting angøende hvilken scene er aktiv
+  //kører en funktion angående hvilken scene er aktiv
   switch (currentScene) {
     case 'game':
       game();
       break;
   }
 
-  //default tilbage taster til false
+  //default taster tilbage til false
   downKey = {
     up: false,
     down: false,
@@ -58,6 +59,12 @@ function draw() {
   pressedKey = {
     confirm: false,
     cancel: false
+  }
+
+  //opdaterer nuværende frame rate, bliver brugt til at definere tid i spillet ud fra tid i stedet for frame rate.
+  //dette gøres, da selvom man sætter frame rate til 60 fps, bliver den fx. i stedet 72 fps på en 144 hz skærm.
+  if (frameRate() !== 0) {
+    currentFrameRate = frameRate();
   }
 
 }
