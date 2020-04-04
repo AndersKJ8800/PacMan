@@ -1,7 +1,7 @@
 class Square {
   constructor(posX, posY, type) {
     this.posX = posX;
-    this.posY = posY + 3;
+    this.posY = posY;
     this.type = type;
     this.sprite;
     this.changeType();
