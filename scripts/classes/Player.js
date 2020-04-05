@@ -1,9 +1,12 @@
 class Player {
     constructor() {
-      this.posX = 74;
-      this.posY = 174;
+      this.posX = 114;
+      this.posY = 188;
+      this.prevPosX;
+      this.prevPosY;
       this.dir = 4;
       this.velocity = 1;
+      this.isMoving;
       this.sprite;
       this.spriteOffsetX = 0;
       this.spriteOffsetY = 0;
@@ -12,15 +15,23 @@ class Player {
       this.squareRight = {posX: null, posY: null, type: null};
       this.squareDown = {posX: null, posY: null, type: null};
       this.squareLeft = {posX: null, posY: null, type: null};
+      this.squareNext;
 
     }
 
     update() {
       this.updateSquares();
       this.changeDirection();
-      this.updatePos();
+      this.updateDir();
       this.display();
       this.velocity = 60 / currentFrameRate;
+      if (this.prevPosX === this.posX && this.prevPosY === this.posY) {
+        this.isMoving = false;
+      } else {
+        this.isMoving = true;
+      }
+      this.prevPosX = this.posX;
+      this.prevPosY = this.posY;
     }
 
     updateSquares() {
@@ -81,71 +92,85 @@ class Player {
 
     changeDirection() {
       if (downKey.up) {
-        if (this.squareUp.type !== "wall") {
+        if (this.squareUp.type !== "wall" && this.squareUp.type !== "gate") {
           this.dir = 1;
-          this.posX = this.squareUp.posX * 8 + 4;
         }
       }
-      if (downKey.right) {
-        if (this.squareRight.type !== "wall") {
+      else if (downKey.right) {
+        if (this.squareRight.type !== "wall" && this.squareRight.type !== "gate") {
           this.dir = 2;
-          this.posY = this.squareRight.posY * 8 + 4;
         }
       }
-      if (downKey.down) {
-        if (this.squareDown.type !== "wall") {
+      else if (downKey.down) {
+        if (this.squareDown.type !== "wall" && this.squareDown.type !== "gate") {
           this.dir = 3;
-          this.posX = this.squareDown.posX * 8 + 4;
         }
       }
-      if (downKey.left) {
-        if (this.squareLeft.type !== "wall") {
+      else if (downKey.left) {
+        if (this.squareLeft.type !== "wall" && this.squareLeft.type !== "gate") {
           this.dir = 4;
-          this.posY = this.squareLeft.posY * 8 + 4;
         }
       }
     }
 
-    updatePos() {
+    updateDir() {
         //opdaterer koordinater ud fra dir: 1 = op, 2 = højre, 3 = ned, 4 = venstre
         switch (this.dir) {
           case 1:
-            if (this.squareUp.type !== "wall") {
-              this.posY = this.posY-this.velocity;
-            }
+            this.squareNext = this.squareUp;
             this.spriteOffsetX = 15;
             this.spriteOffsetY = 0;
             break;
           case 2:
-            if (this.squareRight.type !== "wall") {
-              this.posX = this.posX+this.velocity;
-            }
+            this.squareNext = this.squareRight;
             this.spriteOffsetX = 0;
             this.spriteOffsetY = 0;
             break;
           case 3:
-            if (this.squareDown.type !== "wall") {
-              this.posY = this.posY+this.velocity;
-            }
+            this.squareNext = this.squareDown;
             this.spriteOffsetX = 0;
             this.spriteOffsetY = 15;
             break;
           case 4:
-            if (this.squareLeft.type !== "wall") {
-              this.posX = this.posX-this.velocity;
-            }
+            this.squareNext = this.squareLeft;
             this.spriteOffsetX = 15;
             this.spriteOffsetY = 15;
             break;
         }
+        if (this.squareNext.type !== "wall" && this.squareNext.type !== "gate") {
+          this.moveToSquare("next");
+        } else {
+          this.moveToSquare("current");
+        }
+
         //opdaterer sprite
         this.sprite = animated_sprite.pac_man;
     }
 
+    moveToSquare(which) {
+      let squareToMoveTo;
+      if (which === "next") {
+        squareToMoveTo = this.squareNext;
+      } else if (which === "current") {
+        squareToMoveTo = this.squareCurrent;
+      }
+      if (this.posX < squareToMoveTo.posX * 8 + 3) {
+        this.posX += this.velocity;
+      } else if (this.posX > squareToMoveTo.posX * 8 + 4) {
+        this.posX -= this.velocity;
+      }
+      if (this.posY < squareToMoveTo.posY * 8 + 3) {
+        this.posY += this.velocity;
+      } else if (this.posY > squareToMoveTo.posY * 8 + 4) {
+        this.posY -= this.velocity;
+      }
+    }
+
     display() {
+
       //roterer alt omkring spilleren baseret på spillerens retning og tegner spriten
       //dette gøres, da man ikke bare lige kan rotere et billede for sig selv
-      translate(ceil(this.posX - 7), ceil(this.posY - 7));
+      translate(ceil(this.posX - 8), ceil(this.posY - 8));
       rotate((this.dir-2)*90);
 
       image(this.sprite, 0 - this.spriteOffsetX, 0 - this.spriteOffsetY);
