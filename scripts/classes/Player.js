@@ -16,11 +16,13 @@ class Player {
       this.squareDown = {posX: null, posY: null, type: null};
       this.squareLeft = {posX: null, posY: null, type: null};
       this.squareNext;
+      this.playNom0 = true;
 
     }
 
     update() {
       this.updateSquares();
+      this.eat();
       this.changeDirection();
       this.updateDir();
       this.display();
@@ -32,6 +34,25 @@ class Player {
       }
       this.prevPosX = this.posX;
       this.prevPosY = this.posY;
+    }
+
+    eat() {
+      for (let i = 0; i < squares.length; i++) {
+        if (this.squareCurrent.posX === squares[i].posX && this.squareCurrent.posY === squares[i].posY) {
+          if (squares[i].type === "dot" || squares[i].type === "power pellet") {
+            squares[i].type = "clear";
+            if (this.playNom0) {
+              sound.nom_0.play();
+              this.playNom0 = false;
+            } else {
+              sound.nom_1.play();
+              this.playNom0 = true;
+            }
+          }
+        }
+      }
+
+
     }
 
     updateSquares() {

@@ -30,7 +30,6 @@ class Square {
   }
 
   display() {
-    this.changeType();
     if (this.sprite != null) {
       image(this.sprite, this.posX * 8, this.posY * 8);
     }
