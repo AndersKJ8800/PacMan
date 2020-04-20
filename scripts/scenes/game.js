@@ -21,4 +21,13 @@ function game() {
 
   player.update();
 
+  let ghost1 = new Ghost("red", 20, 50, 1);
+  ghost1.display();
+  let ghost2 = new Ghost("orange", 50, 50, 2);
+  ghost2.display();
+  let ghost3 = new Ghost("cyan", 80, 50, 3);
+  ghost3.display();
+  let ghost4 = new Ghost("pink", 110, 50, 4);
+  ghost4.display();
+
 }

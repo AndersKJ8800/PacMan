@@ -4,21 +4,21 @@ class Square {
     this.posY = posY;
     this.type = type;
     this.sprite;
-    this.changeType();
+    this.changeSprite();
   }
 
   update() {
-    this.changeType();
     this.display();
+    this.changeSprite();
   }
 
-  changeType() {
+  changeSprite() {
     switch (this.type) {
       case "dot":
         this.sprite = sprite.dot;
         break;
       case "power pellet":
-        this.sprite = animated_sprite.power_pellet;
+        this.sprite = animatedSprite.powerPellet;
         break;
       case "gate":
         this.sprite = sprite.gate;

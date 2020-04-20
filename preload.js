@@ -11,13 +11,14 @@ function preload() {
 
   sprite = {
 
-    pac_man: [
+    pacMan: [
       loadImage('resources/images/pac_man_0.png'),
       loadImage('resources/images/pac_man_1.png'),
-      loadImage('resources/images/pac_man_2.png')
+      loadImage('resources/images/pac_man_2.png'),
+      loadImage('resources/images/pac_man_1.png')
     ],
 
-    big_pac_man: [
+    bigPacMan: [
       loadImage('resources/images/placeholder.png'),
       loadImage('resources/images/placeholder.png'),
       loadImage('resources/images/placeholder.png')
@@ -35,29 +36,29 @@ function preload() {
     ],
 
     dot: loadImage('resources/images/dot.png'),
-    power_pellet: loadImage('resources/images/power_pellet.png'),
+    powerPellet: loadImage('resources/images/power_pellet.png'),
     gate: loadImage('resources/images/gate.png'),
 
-    ghost_body: [
+    ghostBody: [
       loadImage('resources/images/ghost_body_0.png'),
       loadImage('resources/images/ghost_body_1.png')
     ],
 
-    ghost_eyes: [
+    ghostEyes: [
       loadImage('resources/images/ghost_eyes_left.png'),
       loadImage('resources/images/ghost_eyes_up.png'),
       loadImage('resources/images/ghost_eyes_right.png'),
       loadImage('resources/images/ghost_eyes_down.png')
     ],
 
-    ghost_score: [
+    ghostScore: [
       loadImage('resources/images/score_200.png'),
       loadImage('resources/images/score_400.png'),
       loadImage('resources/images/score_800.png'),
       loadImage('resources/images/score_1600.png')
     ],
 
-    fruit_score: [
+    fruitScore: [
       loadImage('resources/images/score_100.png'),
       loadImage('resources/images/score_300.png'),
       loadImage('resources/images/score_500.png'),
@@ -70,28 +71,29 @@ function preload() {
 
   }
 
-  animated_sprite = {
-    pac_man: sprite.pac_man[0],
-    power_pellet: sprite.power_pellet
+  animatedSprite = {
+    pacMan: sprite.pacMan[0],
+    powerPellet: sprite.powerPellet,
+    ghostBody: sprite.ghostBody[0]
   }
 
   sound = {
     credit: loadSound('resources/sound/credit.ogg'),
     death: loadSound('resources/sound/death.ogg'),
-    eat_fruit: loadSound('resources/sound/eat_fruit.ogg'),
-    eat_ghost: loadSound('resources/sound/eat_ghost.ogg'),
+    eatFruit: loadSound('resources/sound/eat_fruit.ogg'),
+    eatGhost: loadSound('resources/sound/eat_ghost.ogg'),
     intermission: loadSound('resources/sound/intermission.ogg'),
-    lethal_nomming: loadSound('resources/sound/lethal_nomming.ogg'),
-    nom_0: loadSound('resources/sound/nom_0.ogg'),
-    nom_1: loadSound('resources/sound/nom_1.ogg'),
+    lethalNomming: loadSound('resources/sound/lethal_nomming.ogg'),
+    nom0: loadSound('resources/sound/nom_0.ogg'),
+    nom1: loadSound('resources/sound/nom_1.ogg'),
     oneup: loadSound('resources/sound/oneup.ogg'),
     retreat: loadSound('resources/sound/retreat.ogg'),
-    siren_0: loadSound('resources/sound/siren_0.ogg'),
-    siren_1: loadSound('resources/sound/siren_1.ogg'),
-    siren_2: loadSound('resources/sound/siren_2.ogg'),
-    siren_3: loadSound('resources/sound/siren_3.ogg'),
-    siren_4: loadSound('resources/sound/siren_4.ogg'),
+    siren0: loadSound('resources/sound/siren_0.ogg'),
+    siren1: loadSound('resources/sound/siren_1.ogg'),
+    siren2: loadSound('resources/sound/siren_2.ogg'),
+    siren3: loadSound('resources/sound/siren_3.ogg'),
+    siren4: loadSound('resources/sound/siren_4.ogg'),
     start: loadSound('resources/sound/start.ogg')
-  };
+  }
 
 }

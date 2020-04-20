@@ -15,16 +15,20 @@ class Player {
       this.squareRight = {posX: null, posY: null, type: null};
       this.squareDown = {posX: null, posY: null, type: null};
       this.squareLeft = {posX: null, posY: null, type: null};
-      this.squareNext;
+      this.squareNext = {posX: null, posY: null, type: null};
+      this.squarePrev = {posX: null, posY: null, type: null};
       this.playNom0 = true;
 
     }
 
     update() {
       this.updateSquares();
-      this.eat();
       this.changeDirection();
-      this.updateDir();
+      this.updateDirection();
+      //hvis pacmans nuværende firkant ikke er den samme som i sidste frame
+      if (this.squarePrev !== this.squareCurrent && (this.squareCurrent.type === "dot" || this.squareCurrent.type === "power pellet")) {
+        this.eat();
+      }
       this.display();
       this.velocity = 60 / currentFrameRate;
       if (this.prevPosX === this.posX && this.prevPosY === this.posY) {
@@ -32,6 +36,8 @@ class Player {
       } else {
         this.isMoving = true;
       }
+      this.squarePrev.posX = this.squareCurrent.posX;
+      this.squarePrev.posY = this.squareCurrent.posY;
       this.prevPosX = this.posX;
       this.prevPosY = this.posY;
     }
@@ -39,15 +45,13 @@ class Player {
     eat() {
       for (let i = 0; i < squares.length; i++) {
         if (this.squareCurrent.posX === squares[i].posX && this.squareCurrent.posY === squares[i].posY) {
-          if (squares[i].type === "dot" || squares[i].type === "power pellet") {
-            squares[i].type = "clear";
-            if (this.playNom0) {
-              sound.nom_0.play();
-              this.playNom0 = false;
-            } else {
-              sound.nom_1.play();
-              this.playNom0 = true;
-            }
+          squares[i].type = "clear";
+          if (this.playNom0) {
+            sound.nom0.play();
+            this.playNom0 = false;
+          } else {
+            sound.nom1.play();
+            this.playNom0 = true;
           }
         }
       }
@@ -112,30 +116,35 @@ class Player {
     }
 
     changeDirection() {
-      if (downKey.up) {
+
+      //ændrer retning hvis den retningen for den tast man holder nede enten er den eneste der bliver holdt nede, eller hvis man holder flere taster nede, skal tasten være den senest trykkede.
+      if ((downKey.up && downKey.noOf === 1 ) || (downKey.up && downKey.latest === "up")) {
         if (this.squareUp.type !== "wall" && this.squareUp.type !== "gate") {
           this.dir = 1;
         }
       }
-      else if (downKey.right) {
+      else if ((downKey.right && downKey.noOf === 1 ) || (downKey.right && downKey.latest === "right")) {
         if (this.squareRight.type !== "wall" && this.squareRight.type !== "gate") {
           this.dir = 2;
         }
       }
-      else if (downKey.down) {
+      else if ((downKey.down && downKey.noOf === 1 ) || (downKey.down && downKey.latest === "down")) {
         if (this.squareDown.type !== "wall" && this.squareDown.type !== "gate") {
           this.dir = 3;
         }
       }
-      else if (downKey.left) {
+      else if ((downKey.left && downKey.noOf === 1 ) || (downKey.left && downKey.latest === "left")) {
         if (this.squareLeft.type !== "wall" && this.squareLeft.type !== "gate") {
           this.dir = 4;
         }
       }
+
     }
 
-    updateDir() {
-        //opdaterer koordinater ud fra dir: 1 = op, 2 = højre, 3 = ned, 4 = venstre
+
+
+    updateDirection() {
+        //opdaterer sprite ud fra retning
         switch (this.dir) {
           case 1:
             this.squareNext = this.squareUp;
@@ -158,14 +167,31 @@ class Player {
             this.spriteOffsetY = 15;
             break;
         }
-        if (this.squareNext.type !== "wall" && this.squareNext.type !== "gate") {
-          this.moveToSquare("next");
-        } else {
-          this.moveToSquare("current");
+        //opdaterer position ud fra retning
+        if ((this.squareNext.posX === 0 || this.squareNext.posX === 27) && this.squareCurrent.type === "bridge")
+        {
+            this.posX += this.velocity * -(this.dir - 3);
+        }
+        else if (this.squareNext.type !== "wall" && this.squareNext.type !== "gate")
+        {
+            this.moveToSquare("next");
+        }
+        else
+        {
+            this.moveToSquare("current");
+        }
+
+        if (this.posX < -4)
+        {
+            this.posX = 292;
+        }
+        else if (this.posX > 292)
+        {
+            this.posX = -4;
         }
 
         //opdaterer sprite
-        this.sprite = animated_sprite.pac_man;
+        this.sprite = animatedSprite.pacMan;
     }
 
     moveToSquare(which) {
@@ -188,7 +214,6 @@ class Player {
     }
 
     display() {
-
       //roterer alt omkring spilleren baseret på spillerens retning og tegner spriten
       //dette gøres, da man ikke bare lige kan rotere et billede for sig selv
       translate(ceil(this.posX - 8), ceil(this.posY - 8));
@@ -199,6 +224,5 @@ class Player {
       //roterer alt tilbage igen
       rotate(-(this.dir-2)*90);
       translate(-ceil(this.posX - 7), -ceil(this.posY - 7));
-
     }
 }

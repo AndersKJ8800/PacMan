@@ -6,7 +6,9 @@ let downKey = {
   up: false,
   down: false,
   left: false,
-  right: false
+  right: false,
+  latest: "",
+  noOf: 0
 };
 let pressedKey = {
   confirm: false,
@@ -18,6 +20,7 @@ function setup() {
   angleMode(DEGREES);
   createScaleCanvas();
   initializeSquares();
+  masterVolume(0.1);
 }
 
 function windowResized() { createScaleCanvas(); }
@@ -31,15 +34,19 @@ function draw() {
   //tjek om nogle af regningstasterne er nede
   if (keyIsDown(87) || keyIsDown(UP_ARROW)) {
     downKey.up = true;
+    downKey.noOf++;
   }
   if (keyIsDown(83) || keyIsDown(DOWN_ARROW)) {
     downKey.down = true;
+    downKey.noOf++;
   }
   if (keyIsDown(65) || keyIsDown(LEFT_ARROW)) {
     downKey.left = true;
+    downKey.noOf++;
   }
   if (keyIsDown(68) || keyIsDown(RIGHT_ARROW)) {
     downKey.right = true;
+    downKey.noOf++;
   }
 
   //kører en funktion angående hvilken scene er aktiv
@@ -54,7 +61,9 @@ function draw() {
     up: false,
     down: false,
     left: false,
-    right: false
+    right: false,
+    latest: downKey.latest,
+    noOf: 0
   };
   pressedKey = {
     confirm: false,
@@ -69,12 +78,24 @@ function draw() {
 
 }
 
-//tjek om confirm og cancel tasterne er blevet trykket
+//tjek om confirm og cancel tasterne er blevet trykket samt hvilken af de andre taster er blevet trykket sidst
 function keyPressed() {
   if (keyCode === 32) {
     pressedKey.confirm = true;
   }
   if (keyCode === 27) {
     pressedKey.cancel = true;
+  }
+  if (keyCode === 87 || keyIsDown(UP_ARROW)) {
+    downKey.latest = "up";
+  }
+  if (keyCode === 83 || keyIsDown(DOWN_ARROW)) {
+    downKey.latest = "down";
+  }
+  if (keyCode === 65 || keyIsDown(LEFT_ARROW)) {
+    downKey.latest = "left";
+  }
+  if (keyCode === 68 || keyIsDown(RIGHT_ARROW)) {
+    downKey.latest = "right";
   }
 }
