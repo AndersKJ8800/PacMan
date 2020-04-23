@@ -20,7 +20,7 @@ function initializeSquares() {
       //definerer typen af firkanten ud fra hvilken farve den tilsvarende pixel har som matcher definitionerne før loopet.
       //dette kunne gøres ved at hardcode farveværdierne ind, men da firefox, i modsætning til chrome,
       //ikke når frem til de præcist rigtige farver, bliver det nødt til at blive defineret på denne måde.
-      //fx. for farven i pixel 0, 0 som er 255, 0, 255 får firefox det i stedet til at være 247, 26, 250.
+      //fx. for farven i pixel 0, 0 som er 255, 0, 255 får firefox farven til i stedet at være 247, 26, 250.
       let c = img.defines.get(i, j).toString();
       switch (c) {
         case color.ghost_enclosure:

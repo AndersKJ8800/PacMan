@@ -1,6 +1,6 @@
 let resX = 224;
 let resY = 288;
-let currentScene = 'game';
+let currentScene = "game intro";
 let currentFrameRate = 60;
 let downKey = {
   up: false,
@@ -51,9 +51,10 @@ function draw() {
 
   //kører en funktion angående hvilken scene er aktiv
   switch (currentScene) {
-    case 'game':
-      game();
-      break;
+    case "game":
+    case "game intro":
+        game();
+        break;
   }
 
   //default taster tilbage til false

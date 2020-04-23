@@ -6,6 +6,7 @@ class Ghost
         this.posX = posX;
         this.posY = posY;
         this.dir = dir;
+        this.squareUp
     }
 
     display()

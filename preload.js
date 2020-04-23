@@ -88,11 +88,13 @@ function preload() {
     nom1: loadSound('resources/sound/nom_1.ogg'),
     oneup: loadSound('resources/sound/oneup.ogg'),
     retreat: loadSound('resources/sound/retreat.ogg'),
-    siren0: loadSound('resources/sound/siren_0.ogg'),
-    siren1: loadSound('resources/sound/siren_1.ogg'),
-    siren2: loadSound('resources/sound/siren_2.ogg'),
-    siren3: loadSound('resources/sound/siren_3.ogg'),
-    siren4: loadSound('resources/sound/siren_4.ogg'),
+    siren: [
+        loadSound('resources/sound/siren_0.ogg'),
+        loadSound('resources/sound/siren_1.ogg'),
+        loadSound('resources/sound/siren_2.ogg'),
+        loadSound('resources/sound/siren_3.ogg'),
+        loadSound('resources/sound/siren_4.ogg'),
+    ],
     start: loadSound('resources/sound/start.ogg')
   }
 

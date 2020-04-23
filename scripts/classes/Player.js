@@ -1,15 +1,15 @@
 class Player {
     constructor() {
-      this.posX = 114;
+      this.posX = 113;
       this.posY = 188;
       this.prevPosX;
       this.prevPosY;
       this.dir = 4;
       this.velocity = 1;
       this.isMoving;
-      this.sprite;
-      this.spriteOffsetX = 0;
-      this.spriteOffsetY = 0;
+      this.sprite = sprite.pacMan[0];
+      this.spriteOffsetX = 15;
+      this.spriteOffsetY = 15;
       this.squareCurrent = {posX: null, posY: null, type: null};
       this.squareUp = {posX: null, posY: null, type: null};
       this.squareRight = {posX: null, posY: null, type: null};
@@ -29,7 +29,6 @@ class Player {
       if (this.squarePrev !== this.squareCurrent && (this.squareCurrent.type === "dot" || this.squareCurrent.type === "power pellet")) {
         this.eat();
       }
-      this.display();
       this.velocity = 60 / currentFrameRate;
       if (this.prevPosX === this.posX && this.prevPosY === this.posY) {
         this.isMoving = false;

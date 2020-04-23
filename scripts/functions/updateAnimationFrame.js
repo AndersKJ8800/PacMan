@@ -15,10 +15,15 @@ let spriteCycle =
 function updateAnimationFrame()
 {
     //pac man updaterer hver tredivedel af et sekund
+    let playerIsMoving = false;
+    if (player !== null) {
+        playerIsMoving = player.isMoving;
+    }
+
     if (tally.pacMan === 1)
     {
         tally.pacMan = 0;
-        if (player.isMoving)
+        if (playerIsMoving)
         {
             if (spriteCycle.pacMan < 3)
             {
@@ -70,7 +75,10 @@ function updateAnimationFrame()
     {
         thirtyPerSecondTimer = 0;
         tally.pacMan++;
-        tally.powerPellet++;
+        if (currentScene === "game")
+        {
+            tally.powerPellet++;
+        }
         tally.ghostBody++;
     }
 
