@@ -28,14 +28,25 @@ function sirenSound()
 
     if (!sound.siren[currentSiren].isPlaying() && playSiren)
     {
+      if (lethalNomming)
+      {
+        if (!sound.lethalNomming.isPlaying())
+        {
+          sound.lethalNomming.loop();
+        }
+      }
+      else
+      {
+        sound.lethalNomming.stop();
         sound.siren[0].stop();
         sound.siren[1].stop();
         sound.siren[2].stop();
         sound.siren[3].stop();
         sound.siren[4].stop();
         sound.siren[currentSiren].loop();
+      }
     }
-    if (!playSiren)
+    if (!playSiren || lethalNomming)
     {
         sound.siren[0].stop();
         sound.siren[1].stop();

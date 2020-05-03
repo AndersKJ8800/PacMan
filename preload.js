@@ -51,6 +51,8 @@ function preload() {
       loadImage('resources/images/ghost_eyes_down.png')
     ],
 
+    ghostFaceBlue: loadImage('resources/images/ghost_face_blue.png'),
+
     ghostScore: [
       loadImage('resources/images/score_200.png'),
       loadImage('resources/images/score_400.png'),

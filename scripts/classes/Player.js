@@ -1,35 +1,33 @@
-class Player {
+class Player extends Entity {
     constructor() {
+      super();
       this.posX = 113;
       this.posY = 188;
       this.prevPosX;
       this.prevPosY;
       this.dir = 4;
-      this.velocity = 1;
       this.isMoving;
       this.sprite = sprite.pacMan[0];
       this.spriteOffsetX = 15;
       this.spriteOffsetY = 15;
-      this.squareCurrent = {posX: null, posY: null, type: null};
-      this.squareUp = {posX: null, posY: null, type: null};
-      this.squareRight = {posX: null, posY: null, type: null};
-      this.squareDown = {posX: null, posY: null, type: null};
-      this.squareLeft = {posX: null, posY: null, type: null};
-      this.squareNext = {posX: null, posY: null, type: null};
-      this.squarePrev = {posX: null, posY: null, type: null};
       this.playNom0 = true;
 
     }
 
-    update() {
+    update()
+    {
       this.updateSquares();
       this.changeDirection();
       this.updateDirection();
       //hvis pacmans nuværende firkant ikke er den samme som i sidste frame
       if (this.squarePrev !== this.squareCurrent && (this.squareCurrent.type === "dot" || this.squareCurrent.type === "power pellet")) {
+        if (this.squareCurrent.type === "power pellet")
+        {
+          lethalNomming = true;
+          lethalNommingTimer = 10000;
+        }
         this.eat();
       }
-      this.velocity = 60 / currentFrameRate;
       if (this.prevPosX === this.posX && this.prevPosY === this.posY) {
         this.isMoving = false;
       } else {
@@ -41,7 +39,8 @@ class Player {
       this.prevPosY = this.posY;
     }
 
-    eat() {
+    eat()
+    {
       for (let i = 0; i < squares.length; i++) {
         if (this.squareCurrent.posX === squares[i].posX && this.squareCurrent.posY === squares[i].posY) {
           squares[i].type = "clear";
@@ -58,64 +57,7 @@ class Player {
 
     }
 
-    updateSquares() {
-      let middlePosX = ceil(this.posX -7);
-      let middlePosY = ceil(this.posY -7);
-      let currentSquareX = ceil(middlePosX / 8);
-      let currentSquareY = ceil(middlePosY / 8);
-
-      for (let i = 0; i < squares.length; i++) {
-
-        if (currentSquareX === squares[i].posX) {
-          switch (currentSquareY - squares[i].posY) {
-            case -1:
-              this.squareDown = {
-                posX: squares[i].posX,
-                posY: squares[i].posY,
-                type: squares[i].type,
-              }
-              break;
-            case 1:
-              this.squareUp = {
-                posX: squares[i].posX,
-                posY: squares[i].posY,
-                type: squares[i].type,
-              }
-              break;
-          }
-        }
-
-        if (currentSquareY === squares[i].posY) {
-          switch (currentSquareX - squares[i].posX) {
-            case -1:
-              this.squareRight = {
-                posX: squares[i].posX,
-                posY: squares[i].posY,
-                type: squares[i].type,
-              }
-              break;
-            case 1:
-              this.squareLeft = {
-                posX: squares[i].posX,
-                posY: squares[i].posY,
-                type: squares[i].type,
-              }
-              break;
-          }
-        }
-
-        if (currentSquareX === squares[i].posX && currentSquareY === squares[i].posY) {
-          this.squareCurrent.posX = squares[i].posX;
-          this.squareCurrent.posY = squares[i].posY;
-          this.squareCurrent.type = squares[i].type;
-        }
-
-      }
-
-    }
-
     changeDirection() {
-
       //ændrer retning hvis den retningen for den tast man holder nede enten er den eneste der bliver holdt nede, eller hvis man holder flere taster nede, skal tasten være den senest trykkede.
       if ((downKey.up && downKey.noOf === 1 ) || (downKey.up && downKey.latest === "up")) {
         if (this.squareUp.type !== "wall" && this.squareUp.type !== "gate") {
@@ -169,7 +111,7 @@ class Player {
         //opdaterer position ud fra retning
         if ((this.squareNext.posX === 0 || this.squareNext.posX === 27) && this.squareCurrent.type === "bridge")
         {
-            this.posX += this.velocity * -(this.dir - 3);
+            this.posX += velocity * -(this.dir - 3);
         }
         else if (this.squareNext.type !== "wall" && this.squareNext.type !== "gate")
         {
@@ -191,25 +133,6 @@ class Player {
 
         //opdaterer sprite
         this.sprite = animatedSprite.pacMan;
-    }
-
-    moveToSquare(which) {
-      let squareToMoveTo;
-      if (which === "next") {
-        squareToMoveTo = this.squareNext;
-      } else if (which === "current") {
-        squareToMoveTo = this.squareCurrent;
-      }
-      if (this.posX < squareToMoveTo.posX * 8 + 3) {
-        this.posX += this.velocity;
-      } else if (this.posX > squareToMoveTo.posX * 8 + 4) {
-        this.posX -= this.velocity;
-      }
-      if (this.posY < squareToMoveTo.posY * 8 + 3) {
-        this.posY += this.velocity;
-      } else if (this.posY > squareToMoveTo.posY * 8 + 4) {
-        this.posY -= this.velocity;
-      }
     }
 
     display() {
