@@ -3,6 +3,7 @@ class Entity
     constructor()
     {
         this.squareCurrent = {posX: null, posY: null, type: null};
+        this.squareNext = {posX: null, posY: null, type: null};
         this.squareUp = {posX: null, posY: null, type: null};
         this.squareRight = {posX: null, posY: null, type: null};
         this.squareDown = {posX: null, posY: null, type: null};
@@ -64,6 +65,22 @@ class Entity
           this.squareCurrent.type = squares[i].type;
         }
 
+      }
+
+      switch(this.dir)
+      {
+        case 1:
+          this.squareNext = this.squareUp;
+          break;
+        case 2:
+          this.squareNext = this.squareRight;
+          break;
+        case 3:
+          this.squareNext = this.squareDown;
+          break;
+        case 4:
+          this.squareNext = this.squareLeft;
+          break;
       }
 
     }

@@ -24,7 +24,7 @@ class Player extends Entity {
         if (this.squareCurrent.type === "power pellet")
         {
           lethalNomming = true;
-          lethalNommingTimer = 10000;
+          lethalNommingTimer = 6000;
         }
         this.eat();
       }
@@ -88,22 +88,18 @@ class Player extends Entity {
         //opdaterer sprite ud fra retning
         switch (this.dir) {
           case 1:
-            this.squareNext = this.squareUp;
             this.spriteOffsetX = 15;
             this.spriteOffsetY = 0;
             break;
           case 2:
-            this.squareNext = this.squareRight;
             this.spriteOffsetX = 0;
             this.spriteOffsetY = 0;
             break;
           case 3:
-            this.squareNext = this.squareDown;
             this.spriteOffsetX = 0;
             this.spriteOffsetY = 15;
             break;
           case 4:
-            this.squareNext = this.squareLeft;
             this.spriteOffsetX = 15;
             this.spriteOffsetY = 15;
             break;
@@ -145,6 +141,6 @@ class Player extends Entity {
 
       //roterer alt tilbage igen
       rotate(-(this.dir-2)*90);
-      translate(-ceil(this.posX - 7), -ceil(this.posY - 7));
+      translate(-ceil(this.posX - 8), -ceil(this.posY - 8));
     }
 }

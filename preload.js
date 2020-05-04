@@ -45,10 +45,10 @@ function preload() {
     ],
 
     ghostEyes: [
-      loadImage('resources/images/ghost_eyes_left.png'),
       loadImage('resources/images/ghost_eyes_up.png'),
       loadImage('resources/images/ghost_eyes_right.png'),
-      loadImage('resources/images/ghost_eyes_down.png')
+      loadImage('resources/images/ghost_eyes_down.png'),
+      loadImage('resources/images/ghost_eyes_left.png')
     ],
 
     ghostFaceBlue: loadImage('resources/images/ghost_face_blue.png'),

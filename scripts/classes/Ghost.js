@@ -11,17 +11,34 @@ class Ghost extends Entity
 
     update()
     {
-
+      if (this.squareNext.type === "wall")
+      {
+        this.dir = random([1,2,3,4]);
+      }
+      this.updateSquares();
+      this.moveToSquare("next");
     }
 
     display()
     {
+      translate(ceil(this.posX - 7), ceil(this.posY - 7));
       if (lethalNomming)
       {
-        tint(33,33,255);
-        image(animatedSprite.ghostBody, this.posX, this.posY);
+        //skifter mellem blå og hvid hvert 1/5 sek, hvis timeren er under to sek
+        if (lethalNommingTimer > 2000 || !(abs(ceil(((lethalNommingTimer) / 200))) % 2))
+        {
+          tint(33,33,255);
+          image(animatedSprite.ghostBody, 0, 0);
+          noTint();
+        }
+        else
+        {
+          tint(222,222,255);
+          image(animatedSprite.ghostBody, 0, 0);
+          tint(255,0,0);
+        }
+        image(sprite.ghostFaceBlue, 0, 0);
         noTint();
-        image(sprite.ghostFaceBlue, this.posX, this.posY);
       }
       else
       {
@@ -40,9 +57,10 @@ class Ghost extends Entity
           tint(255,184,255);
           break;
         }
-        image(animatedSprite.ghostBody, this.posX, this.posY);
+        image(animatedSprite.ghostBody, 0, 0);
         noTint();
-        image(sprite.ghostEyes[this.dir-1], this.posX, this.posY);
+        image(sprite.ghostEyes[this.dir-1], 0, 0);
       }
+      translate(-ceil(this.posX - 7), -ceil(this.posY - 7));
     }
 }

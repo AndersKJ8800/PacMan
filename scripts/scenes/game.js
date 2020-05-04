@@ -15,14 +15,13 @@ function game()
     if (player === null)
     {
         player = new Player();
-        ghost1 = new Ghost("red", 106, 86, 1);
-        ghost2 = new Ghost("cyan", 90, 110, 2);
-        ghost3 = new Ghost("pink", 106, 110, 4);
-        ghost4 = new Ghost("orange", 122, 110, 2);
+        ghost1 = new Ghost("red", 112, 92, 4);
+        ghost2 = new Ghost("cyan", 96, 116, 1);
+        ghost3 = new Ghost("pink", 112, 116, 3);
+        ghost4 = new Ghost("orange", 128, 116, 1);
     }
     //flyt spillet en smule ned
     translate(0, 24);
-
     //tegn bagrunds labyrint
     image(img.background, 0, 0);
     //farv den blå
@@ -39,8 +38,9 @@ function game()
       lethalNommingTimer -= deltaTime;
       lethalNomming = true;
     }
-    else
+    if (lethalNommingTimer <= 0)
     {
+      lethalNommingTimer = 0;
       lethalNomming = false;
     }
 
@@ -67,8 +67,11 @@ function game()
     if (currentScene === "game")
     {
         player.update();
+        ghost1.update();
+        ghost2.update();
+        ghost3.update();
+        ghost4.update();
         sirenSound();
-        this.velocity = 60 / currentFrameRate;
     }
     else
     {
