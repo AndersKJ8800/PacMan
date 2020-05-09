@@ -9,6 +9,50 @@ function preload() {
     background: loadImage('resources/images/background.png')
   }
 
+  symbol = {
+    letter: [
+      loadImage('resources/images/symbols/A.png'),
+      loadImage('resources/images/symbols/B.png'),
+      loadImage('resources/images/symbols/C.png'),
+      loadImage('resources/images/symbols/D.png'),
+      loadImage('resources/images/symbols/E.png'),
+      loadImage('resources/images/symbols/F.png'),
+      loadImage('resources/images/symbols/G.png'),
+      loadImage('resources/images/symbols/H.png'),
+      loadImage('resources/images/symbols/I.png'),
+      loadImage('resources/images/symbols/J.png'),
+      loadImage('resources/images/symbols/K.png'),
+      loadImage('resources/images/symbols/L.png'),
+      loadImage('resources/images/symbols/M.png'),
+      loadImage('resources/images/symbols/N.png'),
+      loadImage('resources/images/symbols/O.png'),
+      loadImage('resources/images/symbols/P.png'),
+      loadImage('resources/images/symbols/Q.png'),
+      loadImage('resources/images/symbols/R.png'),
+      loadImage('resources/images/symbols/S.png'),
+      loadImage('resources/images/symbols/T.png'),
+      loadImage('resources/images/symbols/U.png'),
+      loadImage('resources/images/symbols/V.png'),
+      loadImage('resources/images/symbols/W.png'),
+      loadImage('resources/images/symbols/X.png'),
+      loadImage('resources/images/symbols/Y.png'),
+      loadImage('resources/images/symbols/Z.png')
+    ],
+    number: [
+      loadImage('resources/images/symbols/0.png'),
+      loadImage('resources/images/symbols/1.png'),
+      loadImage('resources/images/symbols/2.png'),
+      loadImage('resources/images/symbols/3.png'),
+      loadImage('resources/images/symbols/4.png'),
+      loadImage('resources/images/symbols/5.png'),
+      loadImage('resources/images/symbols/6.png'),
+      loadImage('resources/images/symbols/7.png'),
+      loadImage('resources/images/symbols/8.png'),
+      loadImage('resources/images/symbols/9.png')
+    ],
+    exclamation: loadImage('resources/images/symbols/!.png')
+  }
+
   sprite = {
 
     pacMan: [
@@ -69,7 +113,9 @@ function preload() {
       loadImage('resources/images/score_2000.png'),
       loadImage('resources/images/score_3000.png'),
       loadImage('resources/images/score_5000.png')
-    ]
+    ],
+
+    life: loadImage('resources/images/life.png')
 
   }
 

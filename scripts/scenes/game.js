@@ -9,6 +9,9 @@ let introMusicHasPlayed = false;
 let displayEntities = false;
 let lethalNomming = false;
 let lethalNommingTimer = 0;
+let currentScore = 0;
+let highScore = 0;
+let lives = 3;
 
 function game()
 {
@@ -20,16 +23,30 @@ function game()
         ghost3 = new Ghost("pink", 112, 116, 3);
         ghost4 = new Ghost("orange", 128, 116, 1);
     }
+
+    //ui
+    image(symbol.letter[7],72,0); //H
+    image(symbol.letter[8],80,0); //I
+    image(symbol.letter[6],88,0); //G
+    image(symbol.letter[7],96,0); //H
+
+    image(symbol.letter[18],112,0); //S
+    image(symbol.letter[2],120,0);  //C
+    image(symbol.letter[14],128,0); //O
+    image(symbol.letter[17],136,0); //R
+    image(symbol.letter[4],144,0);  //E
+
+    for (let i = 0; i < lives; i++)
+    {
+      image(sprite.life, i * 16 + 19, 274);
+    }
+
     //flyt spillet en smule ned
     translate(0, 24);
-    //tegn bagrunds labyrint
+    //tegn bagrunds labyrint og farv den blå
+    tint(33,33,255);
     image(img.background, 0, 0);
-    //farv den blå
-    blendMode(DARKEST);
-    fill(33,33,255);
-    noStroke();
-    rect(0, 0, resX, 31 * 8);
-    blendMode(BLEND);
+    noTint();
 
     velocity = 60 / currentFrameRate;
 
@@ -88,5 +105,10 @@ function game()
         {
             currentScene = "game";
         }
+    }
+
+    if (currentScore > highScore)
+    {
+      highScore = currentScore;
     }
 }
