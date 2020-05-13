@@ -11,7 +11,8 @@ class Player extends Entity {
       this.spriteOffsetX = 15;
       this.spriteOffsetY = 15;
       this.playNom0 = true;
-
+      this.dying = false;
+      this.dyingTimer = 0;
     }
 
     update()
@@ -19,6 +20,7 @@ class Player extends Entity {
       this.updateSquares();
       this.changeDirection();
       this.updateDirection();
+      this.move();
       //hvis pacmans nuværende firkant ikke er den samme som i sidste frame
       if (this.squarePrev !== this.squareCurrent && (this.squareCurrent.type === "dot" || this.squareCurrent.type === "power pellet")) {
         if (this.squareCurrent.type === "power pellet")
@@ -37,6 +39,30 @@ class Player extends Entity {
       this.squarePrev.posY = this.squareCurrent.posY;
       this.prevPosX = this.posX;
       this.prevPosY = this.posY;
+      //dø
+      for (let i = 0; i < 4; i++)
+      {
+        if (
+          abs(this.posX - ghost[i].posX) < 2
+          &&
+          abs(this.posY - ghost[i].posY) < 2
+        )
+        {
+          if (!ghost[i].retrieving)
+          {
+            if (lethalNomming)
+            {
+              ghost[i].retrieving = true;
+              ghost[i].velocity = 1.5;
+            }
+            else
+            {
+              this.dying = true;
+            }
+          }
+        }
+
+      }
     }
 
     eat()
@@ -104,43 +130,58 @@ class Player extends Entity {
             this.spriteOffsetY = 15;
             break;
         }
-        //opdaterer position ud fra retning
-        if ((this.squareNext.posX === 0 || this.squareNext.posX === 27) && this.squareCurrent.type === "bridge")
-        {
-            this.posX += velocity * -(this.dir - 3);
-        }
-        else if (this.squareNext.type !== "wall" && this.squareNext.type !== "gate")
-        {
-            this.moveToSquare("next");
-        }
-        else
-        {
-            this.moveToSquare("current");
-        }
-
-        if (this.posX < -4)
-        {
-            this.posX = 292;
-        }
-        else if (this.posX > 292)
-        {
-            this.posX = -4;
-        }
 
         //opdaterer sprite
         this.sprite = animatedSprite.pacMan;
     }
 
     display() {
-      //roterer alt omkring spilleren baseret på spillerens retning og tegner spriten
-      //dette gøres, da man ikke bare lige kan rotere et billede for sig selv
-      translate(ceil(this.posX - 8), ceil(this.posY - 8));
-      rotate((this.dir-2)*90);
+      if (this.dying === true)
+      {
+        if (ceil((this.dyingTimer-2000)/136) > 0)
+        {
+          this.sprite = sprite.pacManDying[ceil((this.dyingTimer-2000)/136)];
+        }
+        else
+        {
+          this.sprite = null;
+        }
+        this.dyingTimer += deltaTime;
+      }
+      if (this.dyingTimer > 3500) {
+        this.dyingTimer = 0;
+        this.dying = false;
+        lives--;
+        initializeEntities();
+        if (lives > 0)
+        {
+          currentScene = "respawn";
+        }
+        else
+        {
+          currentScene = "game over";
+        }
+      }
 
-      image(this.sprite, 0 - this.spriteOffsetX, 0 - this.spriteOffsetY);
+      if (this.sprite != null)
+      {
+        translate(ceil(this.posX - 8), ceil(this.posY - 8));
+        if (this.dying === false)
+        {
+          //roterer alt omkring spilleren baseret på spillerens retning og tegner spriten
+          //dette gøres, da man ikke bare lige kan rotere et billede for sig selv
+          rotate((this.dir-2)*90);
 
-      //roterer alt tilbage igen
-      rotate(-(this.dir-2)*90);
-      translate(-ceil(this.posX - 8), -ceil(this.posY - 8));
+          image(this.sprite, 0 - this.spriteOffsetX, 0 - this.spriteOffsetY);
+
+          //roterer alt tilbage igen
+          rotate(-(this.dir-2)*90);
+        }
+        else
+        {
+          image(this.sprite, 0, 0);
+        }
+        translate(-ceil(this.posX - 8), -ceil(this.posY - 8));
+      }
     }
 }

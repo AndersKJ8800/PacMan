@@ -11,6 +11,7 @@ class Entity
         this.squarePrev = {posX: null, posY: null, type: null};
         this.spriteOffsetX = 0;
         this.spriteOffsetY = 0;
+        this.velocity = 1;
     }
 
     updateSquares() {
@@ -85,22 +86,46 @@ class Entity
 
     }
 
-    moveToSquare(which) {
-      let squareToMoveTo;
-      if (which === "next") {
-        squareToMoveTo = this.squareNext;
-      } else if (which === "current") {
-        squareToMoveTo = this.squareCurrent;
+    move() {
+      let squareToMoveTo = {posX: null, posY: null, type: null};
+      let which = null;
+      if ((this.squareNext.posX === 0 || this.squareNext.posX === 27) && this.squareCurrent.type === "bridge")
+      {
+          this.posX += this.velocity * baseVelocity * -(this.dir - 3);
       }
-      if (this.posX < squareToMoveTo.posX * 8 + 3) {
-        this.posX += velocity;
-      } else if (this.posX > squareToMoveTo.posX * 8 + 4) {
-        this.posX -= velocity;
+      else if (this.squareNext.type !== "wall" && this.squareNext.type !== "gate")
+      {
+          which = "next";
       }
-      if (this.posY < squareToMoveTo.posY * 8 + 3) {
-        this.posY += velocity;
-      } else if (this.posY > squareToMoveTo.posY * 8 + 4) {
-        this.posY -= velocity;
+      else
+      {
+          which = "current";
+      }
+      if (which != null)
+      {
+        if (which === "next") {
+          squareToMoveTo = this.squareNext;
+        } else if (which === "current") {
+          squareToMoveTo = this.squareCurrent;
+        }
+        if (this.posX < squareToMoveTo.posX * 8 + 3) {
+          this.posX += this.velocity * baseVelocity;
+        } else if (this.posX > squareToMoveTo.posX * 8 + 4) {
+          this.posX -= this.velocity * baseVelocity;
+        }
+        if (this.posY < squareToMoveTo.posY * 8 + 3) {
+          this.posY += this.velocity * baseVelocity;
+        } else if (this.posY > squareToMoveTo.posY * 8 + 4) {
+          this.posY -= this.velocity * baseVelocity;
+        }
+      }
+      if (this.posX < -4)
+      {
+          this.posX = 292;
+      }
+      else if (this.posX > 292)
+      {
+          this.posX = -4;
       }
     }
 

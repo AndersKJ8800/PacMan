@@ -53,6 +53,8 @@ function draw() {
   switch (currentScene) {
     case "game":
     case "game intro":
+    case "respawn":
+    case "game over":
         game();
         break;
   }
@@ -76,7 +78,6 @@ function draw() {
   if (frameRate() !== 0) {
     currentFrameRate = frameRate();
   }
-
 }
 
 //tjek om confirm og cancel tasterne er blevet trykket samt hvilken af de andre taster er blevet trykket sidst

@@ -62,6 +62,20 @@ function preload() {
       loadImage('resources/images/pac_man_1.png')
     ],
 
+    pacManDying: [
+      loadImage('resources/images/pac_man_dying_0.png'),
+      loadImage('resources/images/pac_man_dying_1.png'),
+      loadImage('resources/images/pac_man_dying_2.png'),
+      loadImage('resources/images/pac_man_dying_3.png'),
+      loadImage('resources/images/pac_man_dying_4.png'),
+      loadImage('resources/images/pac_man_dying_5.png'),
+      loadImage('resources/images/pac_man_dying_6.png'),
+      loadImage('resources/images/pac_man_dying_7.png'),
+      loadImage('resources/images/pac_man_dying_8.png'),
+      loadImage('resources/images/pac_man_dying_9.png'),
+      loadImage('resources/images/pac_man_dying_10.png')
+    ],
+
     bigPacMan: [
       loadImage('resources/images/placeholder.png'),
       loadImage('resources/images/placeholder.png'),

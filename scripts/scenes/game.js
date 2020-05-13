@@ -1,9 +1,6 @@
 let player = null;
-let ghost1 = null;
-let ghost2 = null;
-let ghost3 = null;
-let ghost4 = null;
-let velocity = 1;
+let ghost = [null, null, null, null];
+let baseVelocity = 1;
 let pelletsRemaining = 0;
 let introMusicHasPlayed = false;
 let displayEntities = false;
@@ -12,16 +9,13 @@ let lethalNommingTimer = 0;
 let currentScore = 0;
 let highScore = 0;
 let lives = 3;
+let respawnTimer = 0;
 
 function game()
 {
-    if (player === null)
+    if (player == null)
     {
-        player = new Player();
-        ghost1 = new Ghost("red", 112, 92, 4);
-        ghost2 = new Ghost("cyan", 96, 116, 1);
-        ghost3 = new Ghost("pink", 112, 116, 3);
-        ghost4 = new Ghost("orange", 128, 116, 1);
+      initializeEntities();
     }
 
     //ui
@@ -73,42 +67,99 @@ function game()
 
     if (displayEntities)
     {
-        player.display();
-        ghost1.display();
-        ghost2.display();
-        ghost3.display();
-        ghost4.display();
-
+      if (!player.dying)
+      {
+        ghost[0].display();
+        ghost[1].display();
+        ghost[2].display();
+        ghost[3].display();
+      }
+      player.display();
     }
 
-    if (currentScene === "game")
+    if (currentScene === "game" && !player.dying)
     {
         player.update();
-        ghost1.update();
-        ghost2.update();
-        ghost3.update();
-        ghost4.update();
+        ghost[0].update();
+        ghost[1].update();
+        ghost[2].update();
+        ghost[3].update();
         sirenSound();
     }
     else
     {
-        if (!sound.start.isPlaying() && !introMusicHasPlayed)
-        {
-            sound.start.play();
-            introMusicHasPlayed = true;
-        }
-        if (sound.start.currentTime() > 2)
-        {
-            displayEntities = true;
-        }
-        if (!sound.start.isPlaying() && introMusicHasPlayed)
-        {
+      switch (currentScene)
+      {
+        case "respawn":
+          respawnTimer += deltaTime;
+          if (respawnTimer > 2000)
+          {
+            respawnTimer = 0;
             currentScene = "game";
-        }
+          }
+          break;
+        case "game intro":
+          if (!sound.start.isPlaying())
+          {
+            if (introMusicHasPlayed)
+            {
+              currentScene = "game";
+            }
+            else
+            {
+              sound.start.play();
+              introMusicHasPlayed = true;
+            }
+          }
+
+          if (sound.start.currentTime() > 2)
+          {
+            displayEntities = true;
+          }
+          break;
+        case "game over":
+          displayEntities = false;
+          tint(255,0,0);
+          image(symbol.letter[6], 72, 136);
+          image(symbol.letter[0], 80, 136);
+          image(symbol.letter[12], 88, 136);
+          image(symbol.letter[4], 96, 136);
+          image(symbol.letter[14], 120, 136);
+          image(symbol.letter[21], 128, 136);
+          image(symbol.letter[4], 136, 136);
+          image(symbol.letter[17], 144, 136);
+          noTint();
+          break;
+
+      }
+      if (currentScene === "respawn" || currentScene === "game intro")
+      {
+        tint(255,255,0);
+        image(symbol.letter[17],90,136);  //R
+        image(symbol.letter[4],98,136);   //E
+        image(symbol.letter[0],106,136);  //A
+        image(symbol.letter[3],114,136);  //D
+        image(symbol.letter[24],122,136); //Y
+        image(symbol.exclamation,130,136);//!
+        noTint();
+      }
     }
+
+
 
     if (currentScore > highScore)
     {
       highScore = currentScore;
     }
+
+
+}
+
+function initializeEntities()
+{
+  player = new Player();
+  ghost[0] = new Ghost("red", 112, 92 + 3*8, 4);
+  ghost[1] = new Ghost("cyan", 96, 116 + 3*8, 1);
+  ghost[2] = new Ghost("pink", 112, 116 + 3*8, 3);
+  ghost[3] = new Ghost("orange", 128, 116 + 3*8, 1);
 }

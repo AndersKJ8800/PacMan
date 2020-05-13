@@ -14,6 +14,7 @@ let spriteCycle =
 
 function updateAnimationFrame()
 {
+  print(tally.powerPellet);
     //pac man updaterer hver tredivedel af et sekund
     let playerIsMoving = false;
     if (player !== null) {
@@ -78,6 +79,10 @@ function updateAnimationFrame()
         if (currentScene === "game")
         {
             tally.powerPellet++;
+        }
+        else
+        {
+          animatedSprite.powerPellet = sprite.powerPellet;
         }
         tally.ghostBody++;
     }
