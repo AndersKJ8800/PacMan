@@ -8,6 +8,7 @@ class Ghost extends Entity
       this.posY = posY;
       this.dir = dir;
       this.retrieving = false;
+      this.justEaten = false;
     }
 
     update()

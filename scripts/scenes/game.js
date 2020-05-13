@@ -7,9 +7,10 @@ let displayEntities = false;
 let lethalNomming = false;
 let lethalNommingTimer = 0;
 let currentScore = 0;
-let highScore = 0;
+let highScore = 42069;
 let lives = 3;
 let respawnTimer = 0;
+let pauseTimer = 0;
 
 function game()
 {
@@ -18,44 +19,39 @@ function game()
       initializeEntities();
     }
 
-    //ui
-    image(symbol.letter[7],72,0); //H
-    image(symbol.letter[8],80,0); //I
-    image(symbol.letter[6],88,0); //G
-    image(symbol.letter[7],96,0); //H
-
-    image(symbol.letter[18],112,0); //S
-    image(symbol.letter[2],120,0);  //C
-    image(symbol.letter[14],128,0); //O
-    image(symbol.letter[17],136,0); //R
-    image(symbol.letter[4],144,0);  //E
-
-    for (let i = 0; i < lives; i++)
-    {
-      image(sprite.life, i * 16 + 19, 274);
-    }
-
-    //flyt spillet en smule ned
+    // flyt spillet en smule ned
     translate(0, 24);
-    //tegn bagrunds labyrint og farv den blå
+    // tegn bagrunds labyrint og farv den blå
     tint(33,33,255);
     image(img.background, 0, 0);
     noTint();
 
-    velocity = 60 / currentFrameRate;
-
-    if (lethalNommingTimer > 0)
+    if (pauseTimer > 0)
     {
-      lethalNommingTimer -= deltaTime;
-      lethalNomming = true;
+      pauseTimer -= deltaTime;
     }
-    if (lethalNommingTimer <= 0)
+    if (pauseTimer < 0)
     {
-      lethalNommingTimer = 0;
-      lethalNomming = false;
+      pauseTimer = 0;
     }
 
-    //opdatér alle firkanter og tæl hvor pellets mange der er tilbage
+    baseVelocity = 60 / currentFrameRate;
+
+    if (pauseTimer <= 0)
+    {
+      if (lethalNommingTimer > 0)
+      {
+        lethalNommingTimer -= deltaTime;
+        lethalNomming = true;
+      }
+      if (lethalNommingTimer <= 0)
+      {
+        lethalNommingTimer = 0;
+        lethalNomming = false;
+      }
+    }
+
+    // opdatér alle firkanter og tæl hvor pellets mange der er tilbage
     pelletsRemaining = 0;
     for (let i = 0; i < squares.length; i++) {
       squares[i].update();
@@ -67,69 +63,82 @@ function game()
 
     if (displayEntities)
     {
-      if (!player.dying)
+      if (!player.dying || (player.dying && player.dyingTimer < 2000))
       {
-        ghost[0].display();
-        ghost[1].display();
-        ghost[2].display();
-        ghost[3].display();
+        for (let i = 0; i < 4; i++)
+        {
+          if (!ghost[i].justEaten)
+          {
+            ghost[i].display();
+          }
+        }
       }
       player.display();
     }
 
     if (currentScene === "game" && !player.dying)
     {
+      if (pauseTimer === 0)
+      {
+        for (let i = 0; i < 4; i++)
+        {
+          ghost[i].justEaten = false;
+        }
         player.update();
-        ghost[0].update();
-        ghost[1].update();
-        ghost[2].update();
-        ghost[3].update();
         sirenSound();
+      }
+      for (let i = 0; i < 4; i++)
+      {
+        if ((ghost[i].retrieving === true && !ghost[i].justEaten) || pauseTimer === 0)
+        {
+          ghost[i].update();
+        }
+      }
     }
     else
     {
       switch (currentScene)
       {
         case "respawn":
-          respawnTimer += deltaTime;
-          if (respawnTimer > 2000)
+        respawnTimer += deltaTime;
+        if (respawnTimer > 2000)
+        {
+          respawnTimer = 0;
+          currentScene = "game";
+        }
+        break;
+        case "game intro":
+        if (!sound.start.isPlaying())
+        {
+          if (introMusicHasPlayed)
           {
-            respawnTimer = 0;
             currentScene = "game";
           }
-          break;
-        case "game intro":
-          if (!sound.start.isPlaying())
+          else
           {
-            if (introMusicHasPlayed)
-            {
-              currentScene = "game";
-            }
-            else
-            {
-              sound.start.play();
-              introMusicHasPlayed = true;
-            }
+            sound.start.play();
+            introMusicHasPlayed = true;
           }
+        }
 
-          if (sound.start.currentTime() > 2)
-          {
-            displayEntities = true;
-          }
-          break;
+        if (sound.start.currentTime() > 2)
+        {
+          displayEntities = true;
+        }
+        break;
         case "game over":
-          displayEntities = false;
-          tint(255,0,0);
-          image(symbol.letter[6], 72, 136);
-          image(symbol.letter[0], 80, 136);
-          image(symbol.letter[12], 88, 136);
-          image(symbol.letter[4], 96, 136);
-          image(symbol.letter[14], 120, 136);
-          image(symbol.letter[21], 128, 136);
-          image(symbol.letter[4], 136, 136);
-          image(symbol.letter[17], 144, 136);
-          noTint();
-          break;
+        displayEntities = false;
+        tint(255,0,0);
+        image(symbol.letter[6], 72, 136);
+        image(symbol.letter[0], 80, 136);
+        image(symbol.letter[12], 88, 136);
+        image(symbol.letter[4], 96, 136);
+        image(symbol.letter[14], 120, 136);
+        image(symbol.letter[21], 128, 136);
+        image(symbol.letter[4], 136, 136);
+        image(symbol.letter[17], 144, 136);
+        noTint();
+        break;
 
       }
       if (currentScene === "respawn" || currentScene === "game intro")

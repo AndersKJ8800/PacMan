@@ -49,6 +49,48 @@ function draw() {
     downKey.noOf++;
   }
 
+  // ui
+  if (ceil(millis()/250) % 2 || currentScene === "main menu") // viser "1UP" halvdelen af tiden, skifter hvert 1/4 sekund
+  {
+    image(symbol.number[1], 24, 0);  //1
+    image(symbol.letter[20], 32, 0); //U
+    image(symbol.letter[15], 40, 0); //P
+  }
+
+  image(symbol.number[0], 40, 9); //0
+  image(symbol.number[0], 48, 9); //0
+
+  for (let i = 1; i <= currentScore.toString().length; i++)
+  {
+    let no = currentScore.toString()[currentScore.toString().length-i];
+    image(symbol.number[no], -i*8+56, 9);
+  }
+
+  image(symbol.letter[7],72,0); // H
+  image(symbol.letter[8],80,0); // I
+  image(symbol.letter[6],88,0); // G
+  image(symbol.letter[7],96,0); // H
+
+  image(symbol.letter[18],112,0); // S
+  image(symbol.letter[2],120,0);  // C
+  image(symbol.letter[14],128,0); // O
+  image(symbol.letter[17],136,0); // R
+  image(symbol.letter[4],144,0);  // E
+
+  if (highScore !== 0)
+  {
+    for (let i = 1; i <= highScore.toString().length; i++)
+    {
+      let no = highScore.toString()[highScore.toString().length-i];
+      image(symbol.number[no], -i*8+136, 9);
+    }
+  }
+
+  for (let i = 0; i < lives; i++)
+  {
+    image(sprite.life, i * 16 + 19, 274);
+  }
+
   //kører en funktion angående hvilken scene er aktiv
   switch (currentScene) {
     case "game":

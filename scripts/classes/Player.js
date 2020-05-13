@@ -27,6 +27,11 @@ class Player extends Entity {
         {
           lethalNomming = true;
           lethalNommingTimer = 6000;
+          currentScore += 50;
+        }
+        else
+        {
+          currentScore += 10;
         }
         this.eat();
       }
@@ -52,6 +57,8 @@ class Player extends Entity {
           {
             if (lethalNomming)
             {
+              pauseTimer = 1000;
+              ghost[i].justEaten = true;
               ghost[i].retrieving = true;
               ghost[i].velocity = 1.5;
             }
@@ -108,8 +115,6 @@ class Player extends Entity {
 
     }
 
-
-
     updateDirection() {
         //opdaterer sprite ud fra retning
         switch (this.dir) {
@@ -142,6 +147,10 @@ class Player extends Entity {
         {
           this.sprite = sprite.pacManDying[ceil((this.dyingTimer-2000)/136)];
         }
+        else if (this.dyingTimer <= 2000)
+        {
+          this.sprite = sprite.pacMan[1];
+        }
         else
         {
           this.sprite = null;
@@ -166,7 +175,7 @@ class Player extends Entity {
       if (this.sprite != null)
       {
         translate(ceil(this.posX - 8), ceil(this.posY - 8));
-        if (this.dying === false)
+        if (this.dyingTimer < 2000 || this.dying === false)
         {
           //roterer alt omkring spilleren baseret på spillerens retning og tegner spriten
           //dette gøres, da man ikke bare lige kan rotere et billede for sig selv
