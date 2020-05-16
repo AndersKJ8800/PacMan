@@ -152,9 +152,21 @@ function game()
         image(symbol.exclamation,130,136);//!
         noTint();
       }
+      if (currentScene === "game intro")
+      {
+        tint(0,255,255);
+        image(symbol.letter[15],8*9,8*11);
+        image(symbol.letter[11],8*10,8*11);
+        image(symbol.letter[0],8*11,8*11);
+        image(symbol.letter[24],8*12,8*11);
+        image(symbol.letter[4],8*13,8*11);
+        image(symbol.letter[17],8*14,8*11);
+        image(symbol.letter[14],8*16,8*11);
+        image(symbol.letter[13],8*17,8*11);
+        image(symbol.letter[4],8*18,8*11);
+        noTint();
+      }
     }
-
-
 
     if (currentScore > highScore)
     {
