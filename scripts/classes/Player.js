@@ -60,7 +60,6 @@ class Player extends Entity {
               pauseTimer = 1000;
               ghost[i].justEaten = true;
               ghost[i].retrieving = true;
-              ghost[i].velocity = 1.5;
             }
             else
             {
@@ -145,6 +144,10 @@ class Player extends Entity {
       {
         if (ceil((this.dyingTimer-2000)/136) > 0)
         {
+          if (!sound.death.isPlaying())
+          {
+            sound.death.play();
+          }
           this.sprite = sprite.pacManDying[ceil((this.dyingTimer-2000)/136)];
         }
         else if (this.dyingTimer <= 2000)

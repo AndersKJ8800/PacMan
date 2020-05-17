@@ -1,6 +1,6 @@
 let resX = 224;
 let resY = 288;
-let currentScene = "game intro";
+let currentScene = "title";
 let currentFrameRate = 60;
 let downKey = {
   up: false,
@@ -50,7 +50,7 @@ function draw() {
   }
 
   // ui
-  if (ceil(millis()/250) % 2 || currentScene === "main menu") // viser "1UP" halvdelen af tiden, skifter hvert 1/4 sekund
+  if (ceil(millis()/250) % 2 || currentScene === "title") // viser "1UP" halvdelen af tiden, skifter hvert 1/4 sekund
   {
     image(symbol.number[1], 24, 0);  //1
     image(symbol.letter[20], 32, 0); //U
@@ -86,19 +86,17 @@ function draw() {
     }
   }
 
-  for (let i = 0; i < lives; i++)
-  {
-    image(sprite.life, i * 16 + 19, 274);
-  }
-
   //kører en funktion angående hvilken scene er aktiv
   switch (currentScene) {
     case "game":
     case "game intro":
     case "respawn":
     case "game over":
-        game();
-        break;
+      game();
+      break;
+    case "title":
+      title();
+      break;
   }
 
   //default taster tilbage til false
@@ -141,5 +139,17 @@ function keyPressed() {
   }
   if (keyCode === 68 || keyIsDown(RIGHT_ARROW)) {
     downKey.latest = "right";
+  }
+  if (currentScene === "title")
+  {
+    if (keyCode === 32) {
+      gameStart();
+    }
+    if (keyCode === 49) {
+      playerMode = 1;
+    }
+    if (keyCode === 50) {
+      playerMode = 2;
+    }
   }
 }

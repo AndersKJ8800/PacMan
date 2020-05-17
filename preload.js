@@ -50,7 +50,11 @@ function preload() {
       loadImage('resources/images/symbols/8.png'),
       loadImage('resources/images/symbols/9.png')
     ],
-    exclamation: loadImage('resources/images/symbols/!.png')
+    exclamation: loadImage('resources/images/symbols/!.png'),
+    copyright: loadImage('resources/images/symbols/copyright.png'),
+    dot: loadImage('resources/images/symbols/dot.png'),
+    pts: loadImage('resources/images/symbols/pts.png'),
+    dash: loadImage('resources/images/symbols/-.png')
   }
 
   sprite = {

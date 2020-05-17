@@ -1,3 +1,4 @@
+let playerMode = 1;
 let player = null;
 let ghost = [null, null, null, null];
 let baseVelocity = 1;
@@ -11,6 +12,21 @@ let highScore = 42069;
 let lives = 3;
 let respawnTimer = 0;
 let pauseTimer = 0;
+
+function gameStart()
+{
+
+  currentScene = "game intro";
+}
+
+function initializeEntities()
+{
+  player = new Player();
+  ghost[0] = new Ghost("red", 112, 92 + 3*8, 4);
+  ghost[1] = new Ghost("cyan", 96, 116 + 3*8, 1);
+  ghost[2] = new Ghost("pink", 112, 116 + 3*8, 3);
+  ghost[3] = new Ghost("orange", 128, 116 + 3*8, 1);
+}
 
 function game()
 {
@@ -173,14 +189,10 @@ function game()
       highScore = currentScore;
     }
 
+    for (let i = 0; i < lives; i++)
+    {
+      image(sprite.life, i * 16 + 19, 274);
+    }
 
-}
 
-function initializeEntities()
-{
-  player = new Player();
-  ghost[0] = new Ghost("red", 112, 92 + 3*8, 4);
-  ghost[1] = new Ghost("cyan", 96, 116 + 3*8, 1);
-  ghost[2] = new Ghost("pink", 112, 116 + 3*8, 3);
-  ghost[3] = new Ghost("orange", 128, 116 + 3*8, 1);
 }

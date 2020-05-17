@@ -17,6 +17,18 @@ class Ghost extends Entity
       {
         this.dir = random([1,2,3,4]);
       }
+      if (this.retrieving === true)
+      {
+        this.velocity = 1.5;
+      }
+      else if (lethalNomming)
+      {
+        this.velocity = 0.75;
+      }
+      else
+      {
+        this.velocity = 1;
+      }
       this.updateSquares();
       this.move();
     }
