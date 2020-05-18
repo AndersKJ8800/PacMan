@@ -8,24 +8,39 @@ let displayEntities = false;
 let lethalNomming = false;
 let lethalNommingTimer = 0;
 let currentScore = 0;
-let highScore = 42069;
+let highScore = 0;
 let lives = 3;
 let respawnTimer = 0;
 let pauseTimer = 0;
+let currentLevel = 1;
+let easyGhostModeTimings = [7,20,7,20,5,20,5];
+let mediumGhostModeTimings = [7,20,7,20,5,17,1];
+let hardGhostModeTimings = [5,20,5,20,5,14,1];
+let currentGhostModeTimings;
+let currentGhostModeNo = 0;
+let ghostModeTimer = 0;
+let ghostModeIsChase = false;
+let displayGhostTargets = true;
+let levelIcons = [0,1,2,2,3,3,4,4,5,5,6,6,7];
 
 function gameStart()
 {
-
+  score = 0;
+  lives = 3;
+  player = null;
+  ghost = [null, null, null, null];
+  introMusicHasPlayed = false;
+  initializeSquares();
   currentScene = "game intro";
 }
 
 function initializeEntities()
 {
   player = new Player();
-  ghost[0] = new Ghost("red", 112, 92 + 3*8, 4);
-  ghost[1] = new Ghost("cyan", 96, 116 + 3*8, 1);
-  ghost[2] = new Ghost("pink", 112, 116 + 3*8, 3);
-  ghost[3] = new Ghost("orange", 128, 116 + 3*8, 1);
+  ghost[0] = new Ghost("red", 112, 92, 4, 0);
+  ghost[1] = new Ghost("cyan", 96, 116, 1, 5000);
+  ghost[2] = new Ghost("pink", 112, 116, 3, 10000);
+  ghost[3] = new Ghost("orange", 128, 116, 1, 15000);
 }
 
 function game()
@@ -41,6 +56,35 @@ function game()
     tint(33,33,255);
     image(img.background, 0, 0);
     noTint();
+
+    if (currentLevel === 1)
+    {
+      currentGhostModeTimings = easyGhostModeTimings;
+    }
+    else if (currentLevel <= 4)
+    {
+      currentGhostModeTimings = mediumGhostModeTimings;
+    }
+    else
+    {
+      currentGhostModeTimings = hardGhostModeTimings;
+    }
+
+    if (currentScene === "game" && !player.dying && pauseTimer === 0 && !lethalNomming)
+    {
+      if (ghostModeTimer/1000 > currentGhostModeTimings[currentGhostModeNo] && currentGhostModeNo !== 7)
+      {
+        ghostModeIsChase = !ghostModeIsChase;
+        ghostModeTimer = 0;
+        currentGhostModeNo++;
+        for (let i = 0; i < 1; i++)
+        {
+          //ghost[i].updateTarget();
+          //ghost[i].updateDirection();
+        }
+      }
+      ghostModeTimer += deltaTime;
+    }
 
     if (pauseTimer > 0)
     {
@@ -75,21 +119,6 @@ function game()
       {
           pelletsRemaining++;
       }
-    }
-
-    if (displayEntities)
-    {
-      if (!player.dying || (player.dying && player.dyingTimer < 2000))
-      {
-        for (let i = 0; i < 4; i++)
-        {
-          if (!ghost[i].justEaten)
-          {
-            ghost[i].display();
-          }
-        }
-      }
-      player.display();
     }
 
     if (currentScene === "game" && !player.dying)
@@ -143,18 +172,18 @@ function game()
         }
         break;
         case "game over":
-        displayEntities = false;
-        tint(255,0,0);
-        image(symbol.letter[6], 72, 136);
-        image(symbol.letter[0], 80, 136);
-        image(symbol.letter[12], 88, 136);
-        image(symbol.letter[4], 96, 136);
-        image(symbol.letter[14], 120, 136);
-        image(symbol.letter[21], 128, 136);
-        image(symbol.letter[4], 136, 136);
-        image(symbol.letter[17], 144, 136);
-        noTint();
-        break;
+          displayEntities = false;
+          tint(255,0,0);
+          image(symbol.letter[6], 72, 136);
+          image(symbol.letter[0], 80, 136);
+          image(symbol.letter[12], 88, 136);
+          image(symbol.letter[4], 96, 136);
+          image(symbol.letter[14], 120, 136);
+          image(symbol.letter[21], 128, 136);
+          image(symbol.letter[4], 136, 136);
+          image(symbol.letter[17], 144, 136);
+          noTint();
+          break;
 
       }
       if (currentScene === "respawn" || currentScene === "game intro")
@@ -184,6 +213,24 @@ function game()
       }
     }
 
+    if (displayEntities)
+    {
+      if (currentScene !== "game over")
+      {
+        player.display();
+        if (!player.dying || (player.dying && player.dyingTimer < 2000))
+        {
+          for (let i = 0; i < 4; i++)
+          {
+            if (!ghost[i].justEaten)
+            {
+              ghost[i].display();
+            }
+          }
+        }
+      }
+    }
+
     if (currentScore > highScore)
     {
       highScore = currentScore;
@@ -191,7 +238,21 @@ function game()
 
     for (let i = 0; i < lives; i++)
     {
-      image(sprite.life, i * 16 + 19, 274);
+      image(sprite.life, i * 16 + 19, 250);
+    }
+
+    if (lives === 0)
+    {
+      if (pauseTimer === 0)
+      {
+        currentScene = "title";
+      }
+      sound.siren[0].stop();
+      sound.siren[1].stop();
+      sound.siren[2].stop();
+      sound.siren[3].stop();
+      sound.siren[4].stop();
+      sound.lethalNomming.stop();
     }
 
 

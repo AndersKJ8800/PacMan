@@ -13,6 +13,8 @@ class Player extends Entity {
       this.playNom0 = true;
       this.dying = false;
       this.dyingTimer = 0;
+      this.squareX = ceil(this.posX/8);
+      this.squareY = ceil(this.posY/8);
     }
 
     update()
@@ -60,15 +62,21 @@ class Player extends Entity {
               pauseTimer = 1000;
               ghost[i].justEaten = true;
               ghost[i].retrieving = true;
+              sound.eatGhost.play();
             }
             else
             {
               this.dying = true;
+              if (lives === 1)
+              {
+                pauseTimer = 6500;
+              }
             }
           }
         }
-
       }
+      this.squareX = ceil(this.posX/8)-1;
+      this.squareY = ceil(this.posY/8)-1;
     }
 
     eat()
@@ -140,60 +148,64 @@ class Player extends Entity {
     }
 
     display() {
-      if (this.dying === true)
+      if (currentScene !== "game over")
       {
-        if (ceil((this.dyingTimer-2000)/136) > 0)
+        if (this.dying === true)
         {
-          if (!sound.death.isPlaying())
+          if (ceil((this.dyingTimer-2000)/136) > 0)
           {
-            sound.death.play();
+            if (!sound.death.isPlaying())
+            {
+              sound.death.play();
+            }
+            this.sprite = sprite.pacManDying[ceil((this.dyingTimer-2000)/136)];
           }
-          this.sprite = sprite.pacManDying[ceil((this.dyingTimer-2000)/136)];
+          else if (this.dyingTimer <= 2000)
+          {
+            this.sprite = sprite.pacMan[1];
+          }
+          else
+          {
+            this.sprite = null;
+          }
+          this.dyingTimer += deltaTime;
         }
-        else if (this.dyingTimer <= 2000)
-        {
-          this.sprite = sprite.pacMan[1];
+        if (this.dyingTimer > 3500) {
+          this.dyingTimer = 0;
+          this.dying = false;
+          lives--;
+          initializeEntities();
+          if (lives > 0)
+          {
+            currentScene = "respawn";
+          }
+          else
+          {
+            currentScene = "game over";
+          }
         }
-        else
-        {
-          this.sprite = null;
-        }
-        this.dyingTimer += deltaTime;
-      }
-      if (this.dyingTimer > 3500) {
-        this.dyingTimer = 0;
-        this.dying = false;
-        lives--;
-        initializeEntities();
-        if (lives > 0)
-        {
-          currentScene = "respawn";
-        }
-        else
-        {
-          currentScene = "game over";
-        }
-      }
 
-      if (this.sprite != null)
-      {
-        translate(ceil(this.posX - 8), ceil(this.posY - 8));
-        if (this.dyingTimer < 2000 || this.dying === false)
+        if (this.sprite != null)
         {
-          //roterer alt omkring spilleren baseret på spillerens retning og tegner spriten
-          //dette gøres, da man ikke bare lige kan rotere et billede for sig selv
-          rotate((this.dir-2)*90);
+          translate(ceil(this.posX - 8), ceil(this.posY - 8));
+          if (this.dyingTimer < 2000 || this.dying === false)
+          {
+            //roterer alt omkring spilleren baseret på spillerens retning og tegner spriten
+            //dette gøres, da man ikke bare lige kan rotere et billede for sig selv
+            rotate((this.dir-2)*90);
 
-          image(this.sprite, 0 - this.spriteOffsetX, 0 - this.spriteOffsetY);
+            image(this.sprite, 0 - this.spriteOffsetX, 0 - this.spriteOffsetY);
 
-          //roterer alt tilbage igen
-          rotate(-(this.dir-2)*90);
+            //roterer alt tilbage igen
+            rotate(-(this.dir-2)*90);
+          }
+          else
+          {
+            image(this.sprite, 0, 0);
+          }
+          translate(-ceil(this.posX - 8), -ceil(this.posY - 8));
         }
-        else
-        {
-          image(this.sprite, 0, 0);
-        }
-        translate(-ceil(this.posX - 8), -ceil(this.posY - 8));
       }
     }
+
 }

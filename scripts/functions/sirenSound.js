@@ -25,9 +25,20 @@ function sirenSound()
             playSiren = false;
             break;
     }
-    if (lives === 0)
+    if (lives === 0 || player.dying)
     {
       playSiren = false;
+    }
+    for (let i = 0; i < 4; i++)
+    {
+      if (ghost[i].retrieving)
+      {
+        playSiren = false;
+        if (!sound.retreat.isPlaying())
+        {
+          sound.retreat.play();
+        }
+      }
     }
 
     if (!sound.siren[currentSiren].isPlaying() && playSiren)

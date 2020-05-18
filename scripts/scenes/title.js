@@ -6,17 +6,24 @@ function title()
   // PUSH SPACE BUTTON
   tint(255,184,81);
   x = 5;
-  y = 10;
+  y = 14;
   image(symbol.letter[15], x*8, y*8); x += 1;
   image(symbol.letter[17], x*8, y*8); x += 1;
   image(symbol.letter[4], x*8, y*8); x += 1;
   image(symbol.letter[18], x*8, y*8); x += 1;
   image(symbol.letter[18], x*8, y*8); x += 2;
-  image(symbol.letter[18], x*8, y*8); x += 1;
-  image(symbol.letter[15], x*8, y*8); x += 1;
-  image(symbol.letter[0], x*8, y*8); x += 1;
-  image(symbol.letter[2], x*8, y*8); x += 1;
-  image(symbol.letter[4], x*8, y*8); x += 2;
+  if (ceil(millis()/350) % 2)
+  {
+    image(symbol.letter[18], x*8, y*8); x += 1;
+    image(symbol.letter[15], x*8, y*8); x += 1;
+    image(symbol.letter[0], x*8, y*8); x += 1;
+    image(symbol.letter[2], x*8, y*8); x += 1;
+    image(symbol.letter[4], x*8, y*8); x += 2;
+  }
+  else
+  {
+    x += 6;
+  }
   image(symbol.letter[1], x*8, y*8); x += 1;
   image(symbol.letter[20], x*8, y*8); x += 1;
   image(symbol.letter[19], x*8, y*8); x += 1;
@@ -24,25 +31,9 @@ function title()
   image(symbol.letter[14], x*8, y*8); x += 1;
   image(symbol.letter[13], x*8, y*8); x += 1;
 
-  // 1 PLAYER
-  tint(0,255,255);
-  x = 9.5;
-  y = 14;
-  image(symbol.number[playerMode], x*8, y*8); x += 2;
-  image(symbol.letter[15], x*8, y*8); x += 1;
-  image(symbol.letter[11], x*8, y*8); x += 1;
-  image(symbol.letter[0], x*8, y*8); x += 1;
-  image(symbol.letter[24], x*8, y*8); x += 1;
-  image(symbol.letter[4], x*8, y*8); x += 1;
-  image(symbol.letter[17], x*8, y*8); x += 1;
-  if (playerMode === 2)
-  {
-    image(symbol.letter[18], x*8, y*8);
-  }
-
   // BONUS PAC-MAN FOR 10000 pts
   tint(255,184,174);
-  x = 1;
+  x = 1.5;
   y = 18;
   image(symbol.letter[1], x*8, y*8); x += 1;
   image(symbol.letter[14], x*8, y*8); x += 1;
@@ -60,7 +51,6 @@ function title()
   image(symbol.letter[14], x*8, y*8); x += 1;
   image(symbol.letter[17], x*8, y*8); x += 2;
   image(symbol.number[1], x*8, y*8); x += 1;
-  image(symbol.number[0], x*8, y*8); x += 1;
   image(symbol.number[0], x*8, y*8); x += 1;
   image(symbol.number[0], x*8, y*8); x += 1;
   image(symbol.number[0], x*8, y*8); x += 1;

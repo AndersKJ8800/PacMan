@@ -19,7 +19,6 @@ function setup() {
   frameRate(60);
   angleMode(DEGREES);
   createScaleCanvas();
-  initializeSquares();
   masterVolume(0.1);
 }
 
