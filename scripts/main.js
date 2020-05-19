@@ -117,6 +117,8 @@ function draw() {
   if (frameRate() !== 0) {
     currentFrameRate = frameRate();
   }
+
+  print(currentScene, introMusicHasPlayed);
 }
 
 //tjek om confirm og cancel tasterne er blevet trykket samt hvilken af de andre taster er blevet trykket sidst
@@ -142,13 +144,11 @@ function keyPressed() {
   if (currentScene === "title")
   {
     if (keyCode === 32) {
+      currentScore = 0;
+      lives = 3;
+      currentLevel = 1;
+      currentScene = "game intro"
       gameStart();
-    }
-    if (keyCode === 49) {
-      playerMode = 1;
-    }
-    if (keyCode === 50) {
-      playerMode = 2;
     }
   }
 }

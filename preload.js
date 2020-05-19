@@ -126,14 +126,35 @@ function preload() {
       loadImage('resources/images/score_100.png'),
       loadImage('resources/images/score_300.png'),
       loadImage('resources/images/score_500.png'),
+      loadImage('resources/images/score_500.png'),
+      loadImage('resources/images/score_700.png'),
       loadImage('resources/images/score_700.png'),
       loadImage('resources/images/score_1000.png'),
+      loadImage('resources/images/score_1000.png'),
       loadImage('resources/images/score_2000.png'),
+      loadImage('resources/images/score_2000.png'),
+      loadImage('resources/images/score_3000.png'),
       loadImage('resources/images/score_3000.png'),
       loadImage('resources/images/score_5000.png')
     ],
 
-    life: loadImage('resources/images/life.png')
+    life: loadImage('resources/images/life.png'),
+
+    fruit: [
+      loadImage('resources/images/cherry.png'),
+      loadImage('resources/images/strawberry.png'),
+      loadImage('resources/images/orange.png'),
+      loadImage('resources/images/orange.png'),
+      loadImage('resources/images/apple.png'),
+      loadImage('resources/images/apple.png'),
+      loadImage('resources/images/melon.png'),
+      loadImage('resources/images/melon.png'),
+      loadImage('resources/images/galaxian.png'),
+      loadImage('resources/images/galaxian.png'),
+      loadImage('resources/images/bell.png'),
+      loadImage('resources/images/bell.png'),
+      loadImage('resources/images/key.png')
+    ],
 
   }
 

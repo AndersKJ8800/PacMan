@@ -30,7 +30,7 @@ class Ghost extends Entity
       }
       else if (lethalNomming)
       {
-        this.velocity = 0.75;
+        this.velocity = 0.6;
       }
       else
       {
@@ -45,55 +45,72 @@ class Ghost extends Entity
       this.prevPosX = this.posX;
       this.prevPosY = this.posY;
 
-
-      if (this.released)
-      {
-        this.move();
-      }
-      else
-      {
-        if (this.timeToRelease > 0)
-        {
-          if (this.posY < 112 )
-          {
-            this.dir = 3;
-          }
-          if (this.posY > 120)
-          {
-            this.dir = 1;
-          }
-          this.timeToRelease -= deltaTime;
-        }
-        else
-        {
-          if (ceil(this.posX) > 112)
-          {
-            this.dir = 4;
-          }
-          else if (ceil(this.posX) < 112)
-          {
-            this.dir = 2;
-          }
-          else
-          {
-            this.dir = 1;
-          }
-        }
-        if (this.dir === 1 || this.dir === 3)
-        {
-          this.posY += baseVelocity * (this.dir - 2) * 0.5;
-        }
-        else
-        {
-          this.posX += baseVelocity * -(this.dir - 3) * 0.5;
-        }
-        if (ceil(this.posY) === 92)
-        {
-          this.released = true;
-        }
-      }
-
-      if (this.prevPosX === this.posX && this.prevPosY === this.posY && this.released)
+      if ((ceil(this.posX) - 4) / 8 % 1 == 0 && (ceil(this.posY) - 4) / 8 % 1 == 0 && (
+        //virkelig uoptimeret og burde ikke bruges
+        (this.squareCurrent.posX === 1 && this.squareCurrent.posY === 1) ||
+        (this.squareCurrent.posX === 6 && this.squareCurrent.posY === 1) ||
+        (this.squareCurrent.posX === 12 && this.squareCurrent.posY === 1) ||
+        (this.squareCurrent.posX === 15 && this.squareCurrent.posY === 1) ||
+        (this.squareCurrent.posX === 21 && this.squareCurrent.posY === 1) ||
+        (this.squareCurrent.posX === 28 && this.squareCurrent.posY === 1) ||
+        (this.squareCurrent.posX === 6 && this.squareCurrent.posY === 5) ||
+        (this.squareCurrent.posX === 12 && this.squareCurrent.posY === 5) ||
+        (this.squareCurrent.posX === 15 && this.squareCurrent.posY === 5) ||
+        (this.squareCurrent.posX === 21 && this.squareCurrent.posY === 5) ||
+        (this.squareCurrent.posX === 28 && this.squareCurrent.posY === 5) ||
+        (this.squareCurrent.posX === 1 && this.squareCurrent.posY === 8) ||
+        (this.squareCurrent.posX === 6 && this.squareCurrent.posY === 8) ||
+        (this.squareCurrent.posX === 9 && this.squareCurrent.posY === 8) ||
+        (this.squareCurrent.posX === 12 && this.squareCurrent.posY === 8) ||
+        (this.squareCurrent.posX === 15 && this.squareCurrent.posY === 8) ||
+        (this.squareCurrent.posX === 18 && this.squareCurrent.posY === 8) ||
+        (this.squareCurrent.posX === 21 && this.squareCurrent.posY === 8) ||
+        (this.squareCurrent.posX === 26 && this.squareCurrent.posY === 8) ||
+        (this.squareCurrent.posX === 9 && this.squareCurrent.posY === 11) ||
+        (this.squareCurrent.posX === 12 && this.squareCurrent.posY === 11) ||
+        (this.squareCurrent.posX === 15 && this.squareCurrent.posY === 11) ||
+        (this.squareCurrent.posX === 18 && this.squareCurrent.posY === 11) ||
+        (this.squareCurrent.posX === 6 && this.squareCurrent.posY === 14) ||
+        (this.squareCurrent.posX === 9 && this.squareCurrent.posY === 14) ||
+        (this.squareCurrent.posX === 18 && this.squareCurrent.posY === 14) ||
+        (this.squareCurrent.posX === 21 && this.squareCurrent.posY === 14) ||
+        (this.squareCurrent.posX === 6 && this.squareCurrent.posY === 17) ||
+        (this.squareCurrent.posX === 9 && this.squareCurrent.posY === 17) ||
+        (this.squareCurrent.posX === 18 && this.squareCurrent.posY === 17) ||
+        (this.squareCurrent.posX === 21 && this.squareCurrent.posY === 17) ||
+        (this.squareCurrent.posX === 1 && this.squareCurrent.posY === 20) ||
+        (this.squareCurrent.posX === 6 && this.squareCurrent.posY === 20) ||
+        (this.squareCurrent.posX === 9 && this.squareCurrent.posY === 20) ||
+        (this.squareCurrent.posX === 12 && this.squareCurrent.posY === 20) ||
+        (this.squareCurrent.posX === 15 && this.squareCurrent.posY === 20) ||
+        (this.squareCurrent.posX === 18 && this.squareCurrent.posY === 20) ||
+        (this.squareCurrent.posX === 21 && this.squareCurrent.posY === 20) ||
+        (this.squareCurrent.posX === 26 && this.squareCurrent.posY === 20) ||
+        (this.squareCurrent.posX === 1 && this.squareCurrent.posY === 23) ||
+        (this.squareCurrent.posX === 3 && this.squareCurrent.posY === 23) ||
+        (this.squareCurrent.posX === 6 && this.squareCurrent.posY === 23) ||
+        (this.squareCurrent.posX === 9 && this.squareCurrent.posY === 23) ||
+        (this.squareCurrent.posX === 12 && this.squareCurrent.posY === 23) ||
+        (this.squareCurrent.posX === 15 && this.squareCurrent.posY === 23) ||
+        (this.squareCurrent.posX === 18 && this.squareCurrent.posY === 23) ||
+        (this.squareCurrent.posX === 21 && this.squareCurrent.posY === 23) ||
+        (this.squareCurrent.posX === 24 && this.squareCurrent.posY === 23) ||
+        (this.squareCurrent.posX === 26 && this.squareCurrent.posY === 23) ||
+        (this.squareCurrent.posX === 1 && this.squareCurrent.posY === 26) ||
+        (this.squareCurrent.posX === 3 && this.squareCurrent.posY === 26) ||
+        (this.squareCurrent.posX === 6 && this.squareCurrent.posY === 26) ||
+        (this.squareCurrent.posX === 9 && this.squareCurrent.posY === 26) ||
+        (this.squareCurrent.posX === 12 && this.squareCurrent.posY === 26) ||
+        (this.squareCurrent.posX === 15 && this.squareCurrent.posY === 26) ||
+        (this.squareCurrent.posX === 18 && this.squareCurrent.posY === 26) ||
+        (this.squareCurrent.posX === 21 && this.squareCurrent.posY === 26) ||
+        (this.squareCurrent.posX === 24 && this.squareCurrent.posY === 26) ||
+        (this.squareCurrent.posX === 26 && this.squareCurrent.posY === 26) ||
+        (this.squareCurrent.posX === 1 && this.squareCurrent.posY === 29) ||
+        (this.squareCurrent.posX === 12 && this.squareCurrent.posY === 29) ||
+        (this.squareCurrent.posX === 15 && this.squareCurrent.posY === 29) ||
+        (this.squareCurrent.posX === 26 && this.squareCurrent.posY === 29)
+      ))
       {
         this.updateDirection();
       }
@@ -103,7 +120,7 @@ class Ghost extends Entity
 
     updateTarget()
     {
-      if (ghostModeIsChase)
+      if (ghostModeIsChase || this.retrieving === true)
       {
         if (this.color === "red")
         {
@@ -176,20 +193,119 @@ class Ghost extends Entity
 
       if (this.retrieving)
       {
-        this.targetX = 14;
-        this.targetY = 0;
+        this.targetX = 13.5;
+        this.targetY = 11;
+        if (ceil(this.posX) === 108 && this.squareCurrent.posY === 11)
+        {
+          this.retrieving = false;
+        }
       }
+
+      if (this.released)
+      {
+        this.move();
+      }
+      else
+      {
+        if (this.timeToRelease > 0)
+        {
+          if (this.posY < 112)
+          {
+            this.dir = 3;
+          }
+          if (this.posY > 120)
+          {
+            this.dir = 1;
+          }
+          this.timeToRelease -= deltaTime;
+        }
+        else
+        {
+          if (ceil(this.posX) > 112)
+          {
+            this.dir = 4;
+          }
+          else if (ceil(this.posX) < 112)
+          {
+            this.dir = 2;
+          }
+          else
+          {
+            this.dir = 1;
+          }
+        }
+        if (this.dir === 1 || this.dir === 3)
+        {
+          this.posY += baseVelocity * (this.dir - 2) * 0.5;
+        }
+        else
+        {
+          this.posX += baseVelocity * -(this.dir - 3) * 0.5;
+        }
+        if (ceil(this.posY) === 92)
+        {
+          this.released = true;
+          this.dir = 4;
+        }
+      }
+
+      if (this.prevPosX === this.posX && this.prevPosY === this.posY)
+      {
+        this.updateDirection();
+      }
+
+
+
+
+    }
+
+    updateDirection()
+    {
+      let squareDistancesToTarget = [999999,999999,999999,999999];
+      if (this.squareUp.type !== "wall" && this.dir !== 3)
+      {
+        squareDistancesToTarget[0] = sqrt(pow(this.targetX-this.squareCurrent.posX, 2) + pow(this.targetY-(this.squareCurrent.posY-1), 2));
+      }
+      if (this.squareRight.type !== "wall" && this.dir !== 4)
+      {
+        squareDistancesToTarget[1] = sqrt(pow(this.targetX-(this.squareCurrent.posX+1), 2) + pow(this.targetY-this.squareCurrent.posY, 2)) + 0.01;
+      }
+      if (this.squareDown.type !== "wall" && this.dir !== 1)
+      {
+        squareDistancesToTarget[2] = sqrt(pow(this.targetX-this.squareCurrent.posX, 2) + pow(this.targetY-(this.squareCurrent.posY+1), 2)) + 0.02;
+      }
+      if (this.squareLeft.type !== "wall" && this.dir !== 2)
+      {
+        squareDistancesToTarget[3] = sqrt(pow(this.targetX-(this.squareCurrent.posX-1), 2) + pow(this.targetY-this.squareCurrent.posY, 2)) + 0.03;
+      }
+
+      if (squareDistancesToTarget[0] === Math.min(squareDistancesToTarget[0], squareDistancesToTarget[1], squareDistancesToTarget[2], squareDistancesToTarget[3]))
+      {
+        this.dir = 1;
+      }
+      if (squareDistancesToTarget[1] === Math.min(squareDistancesToTarget[0], squareDistancesToTarget[1], squareDistancesToTarget[2], squareDistancesToTarget[3]))
+      {
+        this.dir = 2;
+      }
+      if (squareDistancesToTarget[2] === Math.min(squareDistancesToTarget[0], squareDistancesToTarget[1], squareDistancesToTarget[2], squareDistancesToTarget[3]))
+      {
+        this.dir = 3;
+      }
+      if (squareDistancesToTarget[3] === Math.min(squareDistancesToTarget[0], squareDistancesToTarget[1], squareDistancesToTarget[2], squareDistancesToTarget[3]))
+      {
+        this.dir = 4;
+      }
+
     }
 
     /*
-    updateDirection()
-    {
-      this.distFromSquareUpToTarget = sqrt(pow(this.targetX-this.squareCurrent.posX, 2) + pow(this.targetY-(this.squareCurrent.posY-1), 2));
-      this.distFromSquareRightToTarget = sqrt(pow(this.targetX-(this.squareCurrent.posX+1), 2) + pow(this.targetY-this.squareCurrent.posY, 2)) + 0.01;
-      this.distFromSquareDownToTarget = sqrt(pow(this.targetX-this.squareCurrent.posX, 2) + pow(this.targetY-(this.squareCurrent.posY+1), 2)) + 0.02;
-      this.distFromSquareLeftToTarget = sqrt(pow(this.targetX-(this.squareCurrent.posX-1), 2) + pow(this.targetY-this.squareCurrent.posY, 2)) + 0.03;
-    }*/
+    this.distFromSquareUpToTarget =
+    this.distFromSquareRightToTarget =
+    this.distFromSquareDownToTarget =
+    this.distFromSquareLeftToTarget =
+    */
 
+    /*
     updateDirection()
     {
       let array = [];
@@ -210,10 +326,10 @@ class Ghost extends Entity
         array[array.length] = 4;
       }
 
-
       this.dir = random(array);
       array = [];
     }
+    */
 
     display()
     {

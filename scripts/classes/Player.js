@@ -46,7 +46,7 @@ class Player extends Entity {
       this.squarePrev.posY = this.squareCurrent.posY;
       this.prevPosX = this.posX;
       this.prevPosY = this.posY;
-      //dø
+      //kollision
       for (let i = 0; i < 4; i++)
       {
         if (
@@ -63,6 +63,29 @@ class Player extends Entity {
               ghost[i].justEaten = true;
               ghost[i].retrieving = true;
               sound.eatGhost.play();
+              successiveGhostsEaten++;
+              switch (successiveGhostsEaten)
+              {
+                case 1:
+                  ghostScore.number = 200;
+                  currentScore += 200;
+                  break;
+                case 2:
+                  ghostScore.number = 400;
+                  currentScore += 400;
+                  break;
+                case 3:
+                  ghostScore.number = 800;
+                  currentScore += 800;
+                  break;
+                case 4:
+                  ghostScore.number = 1600;
+                  currentScore += 1600;
+                  break;
+              }
+              ghostScore.posX = this.posX - 6;
+              ghostScore.posY = this.posY - 3;
+              ghostScore.display = true;
             }
             else
             {

@@ -93,7 +93,7 @@ class Entity
       {
           this.posX += this.velocity * baseVelocity * -(this.dir - 3);
       }
-      else if (this.squareNext.type !== "wall" && this.squareNext.type !== "gate")
+      else if (this.squareNext.type !== "wall")
       {
           which = "next";
       }

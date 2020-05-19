@@ -3,6 +3,8 @@ function title()
   let x = 0;
   let y = 0;
 
+  //Bogstaver bliver tegnet som billeder i stedet for som text med en font, da fonts kan se sløre ud, ikke altid skalerer korrekt, mm.
+
   // PUSH SPACE BUTTON
   tint(255,184,81);
   x = 5;
@@ -143,6 +145,7 @@ function title()
   image(symbol.letter[7], x*8, y*8); x += 1;
   image(symbol.letter[19], x*8, y*8); x += 1;
   image(symbol.letter[23], x*8, y*8); x += 1;
+
 
   noTint();
 

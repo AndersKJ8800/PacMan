@@ -13,23 +13,34 @@ let lives = 3;
 let respawnTimer = 0;
 let pauseTimer = 0;
 let currentLevel = 1;
-let easyGhostModeTimings = [7,20,7,20,5,20,5];
-let mediumGhostModeTimings = [7,20,7,20,5,17,1];
-let hardGhostModeTimings = [5,20,5,20,5,14,1];
+let easyGhostModeTimings = [5,20,7,20,5,20,5];
+let mediumGhostModeTimings = [5,20,7,20,5,17,1];
+let hardGhostModeTimings = [3,20,5,20,5,14,1];
 let currentGhostModeTimings;
 let currentGhostModeNo = 0;
 let ghostModeTimer = 0;
 let ghostModeIsChase = false;
-let displayGhostTargets = true;
+let displayGhostTargets = false;
 let levelIcons = [0,1,2,2,3,3,4,4,5,5,6,6,7];
+let successiveGhostsEaten = 0;
+let ghostScore = {
+  number: 0,
+  posX: 0,
+  posY: 0,
+  display: false
+}
+let fruitScore = {
+  number: 0,
+  posX: 106,
+  posY: 136,
+  timer: 0
+}
+let spawnFruit = false;
 
 function gameStart()
 {
-  score = 0;
-  lives = 3;
   player = null;
   ghost = [null, null, null, null];
-  introMusicHasPlayed = false;
   initializeSquares();
   currentScene = "game intro";
 }
@@ -96,6 +107,10 @@ function game()
     }
 
     baseVelocity = 60 / currentFrameRate;
+    if (baseVelocity > 2)
+    {
+      baseVelocity = 2;
+    }
 
     if (pauseTimer <= 0)
     {
@@ -106,10 +121,25 @@ function game()
       }
       if (lethalNommingTimer <= 0)
       {
+        successiveGhostsEaten = 0;
         lethalNommingTimer = 0;
         lethalNomming = false;
       }
     }
+
+
+    if (pelletsRemaining === 176 || pelletsRemaining === 76)
+    {
+      spawnFruit = true;
+    }
+
+    if (currentScene === "game over")
+    {
+      spawnFruit = false;
+      introMusicHasPlayed = false;
+      currentGhostModeNo = 0;
+    }
+
 
     // opdatér alle firkanter og tæl hvor pellets mange der er tilbage
     pelletsRemaining = 0;
@@ -197,27 +227,16 @@ function game()
         image(symbol.exclamation,130,136);//!
         noTint();
       }
-      if (currentScene === "game intro")
-      {
-        tint(0,255,255);
-        image(symbol.letter[15],8*9,8*11);
-        image(symbol.letter[11],8*10,8*11);
-        image(symbol.letter[0],8*11,8*11);
-        image(symbol.letter[24],8*12,8*11);
-        image(symbol.letter[4],8*13,8*11);
-        image(symbol.letter[17],8*14,8*11);
-        image(symbol.letter[14],8*16,8*11);
-        image(symbol.letter[13],8*17,8*11);
-        image(symbol.letter[4],8*18,8*11);
-        noTint();
-      }
     }
 
     if (displayEntities)
     {
       if (currentScene !== "game over")
       {
-        player.display();
+        if (!ghostScore.display)
+        {
+          player.display();
+        }
         if (!player.dying || (player.dying && player.dyingTimer < 2000))
         {
           for (let i = 0; i < 4; i++)
@@ -241,11 +260,32 @@ function game()
       image(sprite.life, i * 16 + 19, 250);
     }
 
+    for (let i = 0; i < 7; i++)
+    {
+      if (currentLevel <= 7 && i < currentLevel)
+      {
+        image(sprite.fruit[i], -i * 16 + 196, 248);
+      }
+      if (currentLevel > 7)
+      {
+        if (i-7+currentLevel > 12)
+        {
+          image(sprite.fruit[12], -i * 16 + 196, 248);
+        }
+        else
+        {
+          image(sprite.fruit[i-7+currentLevel], -i * 16 + 196, 248);
+        }
+      }
+
+    }
+
     if (lives === 0)
     {
       if (pauseTimer === 0)
       {
         currentScene = "title";
+        currentScore = 0;
       }
       sound.siren[0].stop();
       sound.siren[1].stop();
@@ -255,5 +295,135 @@ function game()
       sound.lethalNomming.stop();
     }
 
+    if (ghostScore.display === true)
+    {
+      switch (ghostScore.number)
+      {
+        case 200:
+          image(sprite.ghostScore[0], ghostScore.posX, ghostScore.posY);
+          break;
+        case 400:
+          image(sprite.ghostScore[1], ghostScore.posX, ghostScore.posY);
+          break;
+        case 800:
+          image(sprite.ghostScore[2], ghostScore.posX, ghostScore.posY);
+          break;
+        case 1600:
+          image(sprite.ghostScore[3], ghostScore.posX, ghostScore.posY);
+          break;
+      }
+    }
+    if (pauseTimer === 0)
+    {
+      ghostScore.display = false;
+    }
+
+    if (spawnFruit)
+    {
+      if (currentLevel > 13)
+      {
+        image(sprite.fruit[12], 104, 132);
+      }
+      else
+      {
+        image(sprite.fruit[currentLevel-1], 104, 132);
+      }
+      if (player.squareCurrent.posX === 14 && player.squareCurrent.posY === 17)
+      {
+        spawnFruit = false;
+        sound.eatFruit.play();
+        if (currentLevel === 1)
+        {
+          currentScore += 100;
+          fruitScore.number = 100;
+        }
+        if (currentLevel === 2)
+        {
+          currentScore += 300;
+          fruitScore.number = 300;
+        }
+        if (currentLevel === 4 || currentLevel === 3)
+        {
+          currentScore += 500;
+          fruitScore.number = 500;
+        }
+        if (currentLevel === 6 || currentLevel === 5)
+        {
+          currentScore += 700;
+          fruitScore.number = 700;
+        }
+        if (currentLevel === 8 || currentLevel === 7)
+        {
+          currentScore += 1000;
+          fruitScore.number = 1000;
+        }
+        if (currentLevel === 10 || currentLevel === 9)
+        {
+          currentScore += 2000;
+          fruitScore.number = 2000;
+        }
+        if (currentLevel === 12 || currentLevel === 11)
+        {
+          currentScore += 3000;
+          fruitScore.number = 3000;
+        }
+        if (currentLevel >= 13)
+        {
+          currentScore += 5000;
+          fruitScore.number = 5000;
+        }
+        fruitScore.timer = 1000;
+      }
+    }
+
+    if (fruitScore.timer > 0)
+    {
+      fruitScore.timer -= deltaTime;
+      let n = 0;
+      switch (fruitScore.number)
+      {
+        case 100:
+          n = 0;
+          break;
+        case 300:
+          n = 1;
+          break;
+        case 500:
+          n = 2;
+          break;
+        case 700:
+          n = 3;
+          break;
+        case 1000:
+          n = 4;
+          break;
+        case 2000:
+          n = 5;
+          break;
+        case 3000:
+          n = 6;
+          break;
+        case 5000:
+          n = 7;
+          break;
+      }
+      image(sprite.fruitScore[n], fruitScore.posX, fruitScore.posY);
+    }
+    if (fruitScore.timer < 0)
+    {
+      fruitScore.timer = 0;
+    }
+
+    if (pelletsRemaining === 0)
+    {
+      currentLevel++;
+      sound.siren[0].stop();
+      sound.siren[1].stop();
+      sound.siren[2].stop();
+      sound.siren[3].stop();
+      sound.siren[4].stop();
+      sound.lethalNomming.stop();
+      gameStart();
+    }
 
 }
